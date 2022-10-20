@@ -1,25 +1,27 @@
+const EPSILON = 2.220446049250313e-16
+
 abstract class ComplexNumber {
     a: number;
     b: number;
 
     constructor(a: number, b: number) {
         this.a = a;
-        this.b = b
+        this.b = b;
     }
 
-    abstract neg(): ComplexNumber;
-    abstract inv(): ComplexNumber;
+    neg(): ComplexNumber { return this.algebraic().neg(); }
+    inv(): ComplexNumber { return this.polar().inv(); }
 
-    abstract add(c: ComplexNumber): ComplexNumber;
+    add(c: ComplexNumber): ComplexNumber { return this.algebraic().add(c.algebraic()); }
     sub(c: ComplexNumber): ComplexNumber { return this.add(c.neg()); }
-    abstract mul(c: ComplexNumber): ComplexNumber;
+    mul(c: ComplexNumber): ComplexNumber { return this.polar().mul(c.polar()); }
     div(c: ComplexNumber): ComplexNumber { return this.mul(c.inv()); }
-    abstract abs(): number;
+    abs(): number { return this.algebraic().abs(); }
     abstract con(): ComplexNumber;
 
-    abstract algebraic(): ComplexAlgebraic;
-    abstract polar(): ComplexPolar;
-    isAlmostEqual(c: ComplexNumber): boolean {return true; }
+    algebraic(): ComplexAlgebraic { return this as unknown as ComplexAlgebraic; }
+    polar(): ComplexPolar { return this as unknown as ComplexPolar; }
+    isAlmostEqual(c: ComplexNumber): boolean { return this.abs() - c.abs() <= EPSILON }
 }
 
 export class ComplexAlgebraic extends ComplexNumber {
@@ -33,17 +35,9 @@ export class ComplexAlgebraic extends ComplexNumber {
     public neg(): ComplexAlgebraic {
         return new ComplexAlgebraic(-this.re, -this.im)
     }
-    
-    public inv(): ComplexAlgebraic {
-        return this.polar().inv().algebraic()
-    }
 
-    public add(c: ComplexNumber): ComplexAlgebraic {
-        return new ComplexAlgebraic(this.re + c.algebraic().re, this.im + c.algebraic().im)
-    }
-    
-    public mul(c: ComplexNumber): ComplexAlgebraic {
-        return this.polar().mul(c).algebraic()
+    public add(c: ComplexAlgebraic): ComplexAlgebraic {
+        return new ComplexAlgebraic(this.re + c.re, this.im + c.im)
     }
 
     public abs(): number {
@@ -51,11 +45,7 @@ export class ComplexAlgebraic extends ComplexNumber {
     }
 
     public con(): ComplexAlgebraic {
-        return this
-    }
-
-    public algebraic(): ComplexAlgebraic {
-        return this;
+        return new ComplexAlgebraic(this.re, -this.im);
     }
 
     public polar(): ComplexPolar {
@@ -73,42 +63,21 @@ export class ComplexPolar extends ComplexNumber {
         super(rad, phi);
     }
 
-    public neg(): ComplexPolar {
-        return this.algebraic().neg().polar()
-    }
-    
     public inv(): ComplexPolar {
         return new ComplexPolar(1/this.rad, this.phi)
     }
 
-    add(c: ComplexNumber): ComplexPolar {
-        const new_rad = this.rad + c.polar().rad;
-        const new_phi = (this.phi + c.polar().phi) % 360;
-        return new ComplexPolar(new_rad, new_phi);
+    public mul(c: ComplexPolar): ComplexPolar {
+        return new ComplexPolar(this.rad * c.rad, (this.phi * c.phi) % 360);
     }
 
-    mul(c: ComplexNumber): ComplexPolar {
-        const new_rad = this.rad * c.polar().rad;
-        const new_phi = (this.phi * c.polar().phi) % 360;
-        return new ComplexPolar(new_rad, new_phi);
-    }
-
-    abs(): number {
-        return this.algebraic().abs();
-    }
-
-    con(): ComplexPolar {
+    public con(): ComplexPolar {
         return new ComplexPolar(this.rad, -this.phi);
     }
     
-    algebraic(): ComplexAlgebraic {
+    public algebraic(): ComplexAlgebraic {
         const re: number = this.rad * Math.cos(this.phi);
         const im: number = this.rad * Math.sin(this.phi);
         return new ComplexAlgebraic(re, im);
     }
-
-    polar(): ComplexPolar {
-        return this;
-    }
 }
-
