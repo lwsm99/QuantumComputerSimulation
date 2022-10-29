@@ -7,3 +7,6 @@ In order to approach quantum computing we started coding a library for complex n
 The goal was to incorporate the idea of conceptual programming, which in short means that you want to tell a narrative with your code. At first it wasn't easy getting into that mindset and understanding what conceptual programming is but after a while it worked really well. 
 
 The first iteration was written in JavaScript, at the beginning it was kept rather simple but when trying to incorporate conceptual programming, it turned out that JavaScript is rather unsuitable for this since dynamic typing and the missing option of records made it difficult to create the complex number datatype. After moving to TypeScript it was really easy to do conceptual programming and you could reduce the complexity while also removing unnecessary lines of code.
+
+## Wavefunction
+The Schrödinger equation is a fundamental equation of quantum mechanics. It describes the temporal change of a quantum mechanical state of a non-relativistic system. You can find more information on what this means and how this works in the [Wavefunction README](Wavefunction/README.md).

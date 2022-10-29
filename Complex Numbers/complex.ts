@@ -48,7 +48,7 @@ export class ComplexAlgebraic extends ComplexNumber {
 
     public polar(): ComplexPolar {
         const rad = Math.sqrt(this.a * this.a + this.b * this.b);
-        const phi = Math.atan2(this.a, this.b);
+        const phi = Math.atan2(this.b, this.a);
         return new ComplexPolar(rad, phi);
     }
 }
@@ -64,7 +64,7 @@ export class ComplexPolar extends ComplexNumber {
     }
 
     public mul(c: ComplexPolar): ComplexPolar {
-        return new ComplexPolar(this.a * c.a, (this.b * c.b) % 360);
+        return new ComplexPolar(this.a * c.a, this.b * c.b);
     }
 
     public con(): ComplexPolar {
