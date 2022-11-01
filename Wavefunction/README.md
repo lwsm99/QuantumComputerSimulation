@@ -1,8 +1,7 @@
 # Schrödingers Gleichung [DE]
 Die Schrödinger-Gleichung ist eine grundlegende Gleichung der Quantenmechanik. Sie beschreibt die zeitliche Veränderung eines quantenmechanischen Zustands eines nichtrelativistischen Systems.
 
-In [Wavefunction.md.html](Wavefunction.md.html) kann man mehr über die Gleichung lesen, sie wird dort nochmal genauer erklärt und hergeleitet.
-
+In [Wavefunction.md.html](Wavefunction.md.html) kann man eine Erklärung und Herleitung der Gleichung finden.
 
 
 
