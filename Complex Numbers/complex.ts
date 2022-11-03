@@ -51,6 +51,14 @@ export class ComplexAlgebraic extends ComplexNumber {
         const phi = Math.atan2(this.b, this.a);
         return new ComplexPolar(rad, phi);
     }
+
+    public re(): number {
+        return this.a
+    }
+
+    public im(): number {
+        return this.b
+    }
 }
 
 export class ComplexPolar extends ComplexNumber {
@@ -75,6 +83,14 @@ export class ComplexPolar extends ComplexNumber {
         const re: number = this.a * Math.cos(this.b);
         const im: number = this.a * Math.sin(this.b);
         return new ComplexAlgebraic(re, im);
+    }
+
+    public rad(): number {
+        return this.a
+    }
+
+    public phi(): number {
+        return this.b
     }
 }
 
