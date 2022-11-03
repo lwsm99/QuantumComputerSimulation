@@ -1,0 +1,155 @@
+<meta charset="utf-8" emacsmode="-*- markdown -*-"> <link rel="stylesheet" href="https://casual-effects.com/markdeep/latest/newsmag.css?">
+
+**Quantencomputer**
+   Schrödingers Wellengleichung
+   Von Grundlagen über Wellengleichung zum Code
+
+Die Schrödinger-Gleichung ist eine grundlegende Gleichung der Quantenmechanik. 
+Sie beschreibt die zeitliche Veränderung eines quantenmechanischen Zustands in einem nichtrelativistischen System.
+
+Wir möchten zuerst mit ein paar Grundlagen eröffnen, welche benötigt werden um Schrödingers Wellengleichung zu verstehen. 
+Darauf aufbauend wird die Formel hergeleitet und schrittweise erklärt.
+Zuletzt gilt es den Schritt zu machen diese Formel in Code zu überführen, die Herausforderung besteht darin die Physik Welt mit der Informatik Welt zu verbinden.
+
+
+
+# Physikalische Grundlagen
+Ein durchschnittlicher Informatiker hat leider wenig Verständnis was Physik angeht, daher müssen einige Grundlagen vorab verstanden werden, um Schrödingers Gleichung zu verstehen.
+
+
+## Komplexe Zahlen
+Da Wellenfunktionen durch Komplexe Zahlen dargestellt werden, müssen diese vorab verstanden werden, dafür kann man auf die [Complex Numbers README](../Complex%20Numbers/README.md) zurückgreifen.
+
+
+## Differentialgleichung & Partielle Differentialgleichung
+Die Differentialgleichungen beschreiben die zeitliche Entwicklung eines Physikalischen Systems. 
+
+Die **Differentialgleichung** ist eine Gleichung bzw. ein Gleichungssystem das aus der Funktion $y(x)$ und ihren Ableitungen besteht. 
+Die Unbekannte Funktion $y$ hängt von der Variablen $x$ ab. 
+$x$ kann in dem Fall beispielsweise ein Ort sein.
+
+Die **partielle Differentialgleichung** unterscheidet sich dadurch, dass unsere Funktion $y$ nun von mehreren Variablen abhängt (z.B. Ort und Zeit). 
+
+*Beispiel:*
+$$F(x_1, x_2, y(x_1, x_2), \frac{\partial (x_1, y_2)}{\partial x_1}, \frac{\partial (x_1, x_2)}{\partial x_2}, \frac{\partial^2 (x_1, x_2)}{\partial x_1 \partial x_2}, ...) = 0$$
+
+
+## Nichtrelativistisches System
+Ein Nichtrelativistisches System ist ein System, welches nicht durch die Relativitätstheorie beinflusst wird. 
+Einfach gesagt ist es unsere Wahrnehmung, da wir nur Dinge wahrnehmen können, die von unserer Wahrnehmung beeinflusst werden.
+
+
+
+# Schrödingers Wellengleichung
+Schrödingers Wellengleichung ist das Fundament fast aller praktischen Anwendungen der Quantenmechanik. Die Wellengleichung beschreibt die Veränderung eines physikalischen, nicht relativistischen Zustands.
+Die Wellengleichung beschreibt einen physikalischen Zustand, dies wird über eine Funktion erreicht, welche ihre Form abhängig von der Zeit verändert, dadurch entsteht eine Art Welle, daher kommt der Name Wellengleichung. 
+Das Ziel der Gleichung ist es die Energieniveaus der physikalischen Zustände berechnen.
+
+
+## Die einfachste (zeitunabhängige) Form der Schrödingergleichung
+$$\widehat{H}\Psi=E\Psi$$
+
+$\widehat{H}$ steht für den **Hamilton-Operator**. Der Operator ist das äquivalent zur Hamilton-Funktion der klassischen Physik. 
+Er ist der Energie Operator der Quantenmechanik und gibt Energiemesswerte und Zeitentwicklung an. 
+Der Operator ändert sich kontinuierlich und wird auf eine ganze Funktion ($\Psi$) angewendet, wodurch die Funktion in eine andere überführt wird.
+
+$$\widehat{H}=\frac{\hbar^2}{2m}∇^2 + V$$
+
+    * $\hbar$: reduzierte Planck-Konstante (*Typisch für quantenmechanische Rechnungen*)
+    * $m$: Masse
+    * $∇$: Nabla (*Ableitung nach Raumkoordinaten, siehe Partielle Differentialgleichung*)
+        - $∇^2$: Laplace-Operator (*Zweifache Ableitung nach Raumkoordinaten*)
+    * $V$: Potenzielle Energie
+
+$\Psi$ ist eine **Funktion**, welche von Raum ($x$) und Zeit ($t$) abhängt.
+
+$E$ steht für einen Energie-Eigenwert des Operators $\widehat{H}$ bezüglich der Funktion $\Psi$.
+
+
+## Vervollständigung der Schrödingergleichung
+Wenn wir $E$ so stehen lassen wie jetzt wäre die Wellenfunktion **statisch**, dadurch können jedoch keine Wellen entstehen, es fehlt die Abhängigkeit von der Zeit. 
+Deshalb wandeln wir $E$ in einen **Operator** um, sodass die höhe der Energie die Schwingungsgeschwindigkeit der Wellenfunktion beeinflusst:
+
+$$E=i\hbar \frac{\partial}{\partial t}$$
+
+* $i$: imaginäre Konstante ($\sqrt{-1}$)
+* $\hbar$: reduzierte Planck-Konstante
+* $\frac{\partial}{\partial t}$: Partielle Ableitung nach Zeit ($t$)
+
+
+## Vollständige Schrödingergleichung
+Dies ist nun die ein-dimensionale (nur eine Raumkoordinate $x$) und zeitabhängige ($t$) Schördingergleichung:
+
+$$(-\frac{\hbar^2}{2m} ∇^2 + V) \Psi(x, t) = i\hbar \frac{\partial}{\partial t} \Psi(x, t)$$
+
+Wir haben nun in der ersten Klammer den Hamilton Operator ($\widehat{H}$) ausgeschrieben. 
+Beide $\Psi$ sind abhängig von Ort ($x$) & Zeit ($t$), während $E$ ist auch in seiner ausgeschriebenen Form zu sehen ist.
+
+Zuletzt können wir noch den Laplace-Operator ($∇^2$) ausschreiben
+
+$$(-\frac{\hbar^2}{2m} \frac{\partial^2}{\partial x^2} + V) \Psi(x, t) = i\hbar \frac{\partial}{\partial t} \Psi(x, t)$$
+
+
+
+# Von der Formel zum Code
+Nun möchten wir schrittweise herausfinden wie wir diese Formel so umwandeln können, dass sie im Code nutzbar ist und wir eine Wellenfunktion simulieren können.
+
+
+## Erster Ansatz 
+
+### Reduzierte Schrödingergleichung
+$$-\frac{\partial^2}{\partial x^2} \Psi + ax^2 \Psi = i \frac{\partial}{\partial t} \Psi$$
+
+### Schritt für Schritt
+Eine Simulation muss Zeit & Ort diskretisieren. Dafür müssen wir Werte für die Entfernung ($∆x$) und die Zeit ($∆t$) pro Schritt festlegen. Damit ist:
+
+$$\Psi_{∆t+1} \simeq \Psi_{∆t} -i∆t(-\frac{\partial^2}{\partial x^2} \Psi + ax^2 \Psi)$$
+
+Der Laplace Operator wird mit einer [**](https://de.wikipedia.org/wiki/Finite-Differenzen-Methode) berechnet, was Methoden sind um Differentialgleichungen zu lösen (bzw sich anzunähern). Unser Ergebnis ist dann:
+
+$$\frac{\partial^2}{\partial x^2} \Psi(x, t) \simeq \frac{\Psi(x + ∆x,t) + \Psi(x - ∆x,t) - 2\Psi(x,t)}{∆x^2}$$
+
+### Praktische Umsetzung
+*TODO*
+
+### Ergebnis
+*TODO*
+
+
+## Neuer Versuch mit Split-Operator-Methode
+
+### Schritt für Schritt, aber diesmal genauer
+*TODO*
+
+### Split-Operator-Methode
+*TODO*
+
+### Praktische Umsetzung
+*TODO*
+
+### Ergebnis
+*TODO*
+
+
+
+# Quellen
+* https://de.wikipedia.org/wiki/Schr%C3%B6dingergleichung
+* https://studyflix.de/ingenieurwissenschaften/schrodinger-gleichung-2457
+* https://www.uni-muenster.de/AMM/num/Vorlesungen/natterer/PDGL_WS05/skript.pdf
+* https://www.nobelprize.org/uploads/2017/07/schrodinger-lecture.pdf
+* http://www.quantenwelt.de/quantenmechanik/wellenfunktion/schrodingergleichung.html
+* https://en.wikipedia.org/wiki/Special_relativity
+* https://en.wikipedia.org/wiki/Relativism
+* https://en.wikipedia.org/wiki/Partial_differential_equation
+* https://blog.gwlab.page/solving-1-d-schrodinger-equation-in-python-dcb3518ce454
+* https://en.wikipedia.org/wiki/Numerical_methods_for_ordinary_differential_equations
+* https://physicspython.wordpress.com/tag/schroedinger-equation/
+* https://web.pa.msu.edu/people/duxbury/courses/phy480/SchrodingerDynamics.pdf
+
+
+---
+
+_Lucas Weißmann, V0.3 (2022-11-03)_
+
+<script>markdeepOptions={tocStyle:'medium'};</script>
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
