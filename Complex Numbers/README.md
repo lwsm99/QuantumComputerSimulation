@@ -1,10 +1,12 @@
 # Komplexe Zahlen [DE]
 Um uns dem Quantencomputing zu nähern, haben wir mit der Programmierung einer Bibliothek für komplexe Zahlen begonnen. Sie enthält die grundlegenden arithmetischen Operatoren, aber auch die Konjugation und den Absolutwert und unterstützt neben der algebraischen Form auch die Polarform.
 
-## Grundlagen
-Mit den uns bisher bekannten Zahlen konnten wir bestimmte Probleme nicht lösen wie $x^2 = -1$. Dafür brauchen wir eine Erweiterung um die imaginären Zahlen. Durch das hinzufügen eines Imaginärteils (Im) und der Regel $i^2 = -1$ befinden wir uns nun nicht mehr in einem Zahlenstrahl, sondern auf einer Zahlenebene. 
 
-Eine komplexe Zahl hat die Form $z = a + bi$. a ist damit der Realteil (Re) und b der Imaginärteil (Im).
+## Grundlagen
+Mit den uns bisher bekannten Zahlen konnten wir bestimmte Probleme nicht lösen wie **x² = -1**. Dafür brauchen wir eine Erweiterung um die imaginären Zahlen. Durch das hinzufügen eines Imaginärteils (Im) und der Regel **i² = -1** befinden wir uns nun nicht mehr in einem Zahlenstrahl, sondern auf einer Zahlenebene. 
+
+Eine komplexe Zahl hat die Form **z = a + bi**. **a** ist damit der Realteil (Re) und **b** der Imaginärteil (Im).
+
 
 ## Code
 Das Ziel war es, die Idee der konzeptionellen Programmierung einzubringen, was kurz gesagt bedeutet, den Code erzählen zu lassen. Anfangs war es nicht einfach, sich auf diese Denkweise einzulassen und zu verstehen, was konzeptionelle Programmierung ist, aber nach einer Weile hat es wirklich gut funktioniert. 
@@ -18,10 +20,12 @@ Nach dem Umstieg auf TypeScript war es sehr einfach, konzeptionell zu programmie
 # Complex Numbers [EN]
 In order to approach quantum computing we started coding a library for complex numbers. It contains basic arithmetic operators but also conjugate and the absolute value while also supporting the polar form besides the algebraic form.
 
-## Basics
-With the numbers we know so far, we could not solve certain problems like $x^2 = -1$. For this we need an extension around the imaginary numbers. By adding an imaginary part (Im) and the rule $i^2 = -1$ we are now no longer in a number line, but on a number plane. 
 
-A complex number has the form $z = a + bi$. a is the real part (Re) and b the imaginary part (Im).
+## Basics
+With the numbers we know so far, we could not solve certain problems like **x² = -1**. For this we need an extension around the imaginary numbers. By adding an imaginary part (Im) and the rule **i² = -1** we are now no longer in a number line, but on a number plane. 
+
+A complex number has the form **z = a + bi**. **a** is the real part (Re) and **b** the imaginary part (Im).
+
 
 ## Code
 
