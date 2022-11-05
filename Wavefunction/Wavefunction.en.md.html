@@ -94,30 +94,43 @@ $$(-\frac{\hbar^2}{2m} \frac{\partial^2}{\partial x^2} + V) \Psi(x, t) = i\hbar 
 
 
 # From the equation to the code
-Now we would like to find out step by step how we can convert this equation so that it is codeable and we can simulate a wave function.
+Now we would like to find out step by step how we can simulate the Schrödinger equation. 
+For this we have to solve the Schrödinger equation, for which there are several approaches.
 
 
 ## First approach 
 
 ### Reduced Schrödinger equation
-$$-\frac{\partial^2}{\partial x^2} \Psi + ax^2 \Psi = i \frac{\partial}{\partial t} \Psi$$
+$$-\frac{\partial^2}{\partial x^2} \Psi + V \Psi = i \frac{\partial}{\partial t} \Psi$$
 
-### Step by step
-A simulation must discretize time & place. To do this, we need to specify values for distance ($∆x$) and time ($∆t$) per step. Thus:
+### Timestepping function
+The Schrödinger equation is a continuous equation, which is constantly changing. 
+However, a simulation must discretize time & place. For this we need to specify values for distance ($\Delta x$) and time ($\Delta t$) per step. 
+We now want to find a **timestepping function** which can calculate the time steps $\Delta t$ individually.
 
-$$\Psi_{∆t+1} \simeq \Psi_{∆t} -i∆t(-\frac{\partial^2}{\partial x^2} \Psi + ax^2 \Psi)$$
+By transformations & derivations one can now come to the following timestepping function:
 
-The Laplace operator is calculated using a [**Finite difference method**](https://en.wikipedia.org/wiki/Finite_difference_method), which are methods to solve (or approximate) differential equations. Our result is then:
+$$\Psi_{\Delta t+1} \simeq \Psi_{\Delta t} -i\Delta t(-\frac{\partial^2}{\partial x^2} \Psi + V \Psi)$$
 
-$$\frac{\partial^2}{\partial x^2} \Psi(x, t) \simeq \frac{\Psi(x + ∆x,t) + \Psi(x - ∆x,t) - 2\Psi(x,t)}{∆x^2}$$
+The Laplace operator is calculated using a [**Finite difference method**](https://en.wikipedia.org/wiki/Finite_difference_method), which are methods to solve (or approximate) differential equations. 
+Connected with the timestepping function we now come to the following:
+
+$$\frac{\partial^2}{\partial x^2} \Psi(x, t) \simeq \frac{\Psi(x + \Delta x,t) + \Psi(x - \Delta x,t) - 2\Psi(x,t)}{\Delta x^2}$$
 
 ### Practical implementation & Result
-*TODO*
+
+**Implementation:** *TODO*
+
+**Result:** If we implement the timestepping function found above, then we encounter several problems in the simulation.
+The absolute probability of the electrons increases with time, which should not be possible. 
+In addition, the oscillations also become more and more erroneous with time.
 
 
-## New attempt with split operator method
+## New attempt with the Split-step method
+We try now the whole again with a new procedure the time-dependent Schördingergleichung to solve.
+For this we use the [**Split-step method**](https://en.wikipedia.org/wiki/Split-step_method).
 
-### Step by step, but this time more precise
+### New timestepping function
 *TODO*
 
 ### Practical implementation & Result
@@ -138,11 +151,13 @@ $$\frac{\partial^2}{\partial x^2} \Psi(x, t) \simeq \frac{\Psi(x + ∆x,t) + \Ps
 * https://en.wikipedia.org/wiki/Numerical_methods_for_ordinary_differential_equations
 * https://physicspython.wordpress.com/tag/schroedinger-equation/
 * https://web.pa.msu.edu/people/duxbury/courses/phy480/SchrodingerDynamics.pdf
+* http://www.articlesbyaphysicist.com/quantum4prog.html
+* https://www.algorithm-archive.org/contents/split-operator_method/split-operator_method.html
 
 
 ---
 
-_Lucas Weißmann, V0.3 (2022-11-03)_
+_Lucas Weißmann, V0.4 (2022-11-05)_
 
 <script>markdeepOptions={tocStyle:'medium'};</script>
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

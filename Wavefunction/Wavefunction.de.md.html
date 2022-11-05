@@ -94,30 +94,43 @@ $$(-\frac{\hbar^2}{2m} \frac{\partial^2}{\partial x^2} + V) \Psi(x, t) = i\hbar 
 
 
 # Von der Formel zum Code
-Nun möchten wir schrittweise herausfinden wie wir diese Formel so umwandeln können, dass sie im Code nutzbar ist und wir eine Wellenfunktion simulieren können.
+Nun möchten wir schrittweise herausfinden wie wir die Schrödingergleichung simulieren können. 
+Dazu müssen wir die Schrödingergleichung lösen, wofür es mehrere Ansätze gibt.
 
 
 ## Erster Ansatz 
 
 ### Reduzierte Schrödingergleichung
-$$-\frac{\partial^2}{\partial x^2} \Psi + ax^2 \Psi = i \frac{\partial}{\partial t} \Psi$$
+$$-\frac{\partial^2}{\partial x^2} \Psi + V \Psi = i \frac{\partial}{\partial t} \Psi$$
 
-### Schritt für Schritt
-Eine Simulation muss Zeit & Ort diskretisieren. Dafür müssen wir Werte für die Entfernung ($∆x$) und die Zeit ($∆t$) pro Schritt festlegen. Damit ist:
+### Zeitschritt-Funktion
+Die Schrödingergleichung ist eine kontinuierliche Gleichung, welche sich ständig verändert. 
+Eine Simulation muss jedoch Zeit & Ort diskretisieren. Dafür müssen wir Werte für die Entfernung ($\Delta x$) und die Zeit ($\Delta t$) pro Schritt festlegen. 
+Wir möchten nun eine **Zeitschritt-Funktion** finden, welche die Zeitschritte $\Delta t$ einzeln berechnen kann.
 
-$$\Psi_{∆t+1} \simeq \Psi_{∆t} -i∆t(-\frac{\partial^2}{\partial x^2} \Psi + ax^2 \Psi)$$
+Durch Umformungen & Ableitungen kann man nun auf folgendes Zeitschritt-Funktion kommen:
 
-Der Laplace Operator wird mit einer [**](https://de.wikipedia.org/wiki/Finite-Differenzen-Methode) berechnet, was Methoden sind um Differentialgleichungen zu lösen (bzw sich anzunähern). Unser Ergebnis ist dann:
+$$\Psi_{\Delta t+1} \simeq \Psi_{\Delta t} -i\Delta t(-\frac{\partial^2}{\partial x^2} \Psi + V \Psi)$$
 
-$$\frac{\partial^2}{\partial x^2} \Psi(x, t) \simeq \frac{\Psi(x + ∆x,t) + \Psi(x - ∆x,t) - 2\Psi(x,t)}{∆x^2}$$
+Der Laplace Operator wird mit einer [**Finite-Differenzen-Methode**](https://de.wikipedia.org/wiki/Finite-Differenzen-Methode) berechnet, was Methoden sind um Differentialgleichungen zu lösen (bzw sich anzunähern). 
+Verbunden mit der Zeitschritt-Funktion kommen wir nun auf folgendes:
+
+$$\frac{\partial^2}{\partial x^2} \Psi(x, t) \simeq \frac{\Psi(x + \Delta x,t) + \Psi(x - \Delta x,t) - 2\Psi(x,t)}{\Delta x^2}$$
 
 ### Praktische Umsetzung & Ergebnis
-*TODO*
+
+**Umsetzung:** *TODO*
+
+**Ergebnis:** Wenn wir die oben gefundene Zeitschritt-Funktion umsetzen, dann stoßen wir auf mehrere Probleme in der Simulation.
+Die absolute Wahrscheinlichkeit der Elektronen steigt mit der Zeit, was nicht möglich sein sollte. 
+Dazu werden die Schwingungen auch mit der Zeit immer fehlerhafter.
 
 
 ## Neuer Versuch mit Split-Operator-Methode
+Wir versuchen nun das ganze nochmal mit einem neuen Verfahren die zeitabhängige Schördingergleichung zu lösen.
+Dafür verwenden wir die [**Split-Operator-Methode**](https://de.wikipedia.org/wiki/Split-Operator-Methode).
 
-### Schritt für Schritt, aber diesmal genauer
+### Neue Zeitschritt-Funktion
 *TODO*
 
 ### Praktische Umsetzung & Ergebnis
@@ -138,11 +151,13 @@ $$\frac{\partial^2}{\partial x^2} \Psi(x, t) \simeq \frac{\Psi(x + ∆x,t) + \Ps
 * https://en.wikipedia.org/wiki/Numerical_methods_for_ordinary_differential_equations
 * https://physicspython.wordpress.com/tag/schroedinger-equation/
 * https://web.pa.msu.edu/people/duxbury/courses/phy480/SchrodingerDynamics.pdf
+* http://www.articlesbyaphysicist.com/quantum4prog.html
+* https://www.algorithm-archive.org/contents/split-operator_method/split-operator_method.html
 
 
 ---
 
-_Lucas Weißmann, V0.3 (2022-11-03)_
+_Lucas Weißmann, V0.4 (2022-11-05)_
 
 <script>markdeepOptions={tocStyle:'medium'};</script>
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
