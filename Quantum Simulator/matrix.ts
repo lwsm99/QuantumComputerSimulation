@@ -5,10 +5,11 @@ abstract class Matrix<Type> {
     columns: number
     values: Type[][]
     
-    constructor(rows: number, columns: number) {
+    constructor(rows: number, columns: number, values?: Type[][]) {
         this.rows = rows
         this.columns = columns
         this.values = []
+        this.init(values)
     }
     
     abstract reset(): Matrix<Type>
@@ -103,11 +104,11 @@ export class NumMatrix extends Matrix<number> {
     }
 
     mul(matrix: Matrix<number>): Matrix<number> {
-        return this.multiply(matrix, new NumMatrix(this.rows, matrix.columns).init(), 0)
+        return this.multiply(matrix, new NumMatrix(this.rows, matrix.columns), 0)
     }
 
     kronecker(matrix: Matrix<number>): Matrix<number> {
-        return this.kroneckerProduct(matrix, new NumMatrix(this.rows, matrix.columns).init())
+        return this.kroneckerProduct(matrix, new NumMatrix(this.rows, matrix.columns))
     }
 
     setSum(matrix: Matrix<number>, sum: number, row: number, col: number, idx: number): number {
@@ -119,7 +120,7 @@ export class NumMatrix extends Matrix<number> {
     }
 
     complex(): ComplexMatrix {
-        var newComplexMatrix = new ComplexMatrix(this.rows, this.columns).init()
+        var newComplexMatrix = new ComplexMatrix(this.rows, this.columns)
         for (var row = 0; row < this.rows; row++) {
             for (var col = 0; col < this.columns; col++) {
                 newComplexMatrix.values[row][col] = new ComplexAlgebraic(this.values[row][col], 0)
@@ -141,11 +142,11 @@ export class ComplexMatrix extends Matrix<ComplexNumber> {
     }
 
     mul(matrix: Matrix<ComplexNumber>): Matrix<ComplexNumber> {
-        return this.multiply(matrix, new ComplexMatrix(this.rows, matrix.columns).init(), new ComplexAlgebraic(0, 0))
+        return this.multiply(matrix, new ComplexMatrix(this.rows, matrix.columns), new ComplexAlgebraic(0, 0))
     }
 
     kronecker(matrix: Matrix<ComplexNumber>): Matrix<ComplexNumber> {
-        return this.kroneckerProduct(matrix, new ComplexMatrix(this.rows * matrix.rows, this.columns * matrix.columns).init())
+        return this.kroneckerProduct(matrix, new ComplexMatrix(this.rows * matrix.rows, this.columns * matrix.columns))
     }
 
     setSum(matrix: Matrix<ComplexNumber>, sum: ComplexNumber, row: number, col: number, idx: number): ComplexNumber {
@@ -157,7 +158,7 @@ export class ComplexMatrix extends Matrix<ComplexNumber> {
     }
 
     num(): NumMatrix | ComplexMatrix {
-        var newMatrix = new NumMatrix(this.rows, this.columns).init()
+        var newMatrix = new NumMatrix(this.rows, this.columns)
         for (var row = 0; row < this.rows; row++) {
             for (var col = 0; col < this.columns; col++) {
                 if (this.values[row][col].b !== 0) {

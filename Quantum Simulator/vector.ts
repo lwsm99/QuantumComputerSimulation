@@ -3,8 +3,9 @@ import { ComplexAlgebraic, ComplexNumber } from "../Complex Numbers/complex"
 abstract class Vector<Type> {
     values: Type[]
 
-    constructor(size: number) {
+    constructor(size: number, values?: Type[]) {
         this.values = new Array<Type>(size)
+        this.init(values)
     }
 
     abstract init(values?: Type[]): Vector<Type>

@@ -10,8 +10,8 @@ kroeneckerTest()
 
 function kroeneckerTest() {
     /* Constants */
-    const kronecker = new NumMatrix(3, 2).init([[1, 2], [3, 4], [5, 6]])
-    const kronecker2 = new NumMatrix(2, 2).init([[7, 8], [9, 0]])
+    const kronecker = new NumMatrix(3, 2, [[1, 2], [3, 4], [5, 6]])
+    const kronecker2 = new NumMatrix(2, 2, [[7, 8], [9, 0]])
 
     /* Logs */
     console.log(" - - - - - - - - - Kronecker Test - - - - - - - - -")
@@ -26,21 +26,21 @@ function basicTest(): void {
     const c2: ComplexNumber = new ComplexAlgebraic(1, 1)
     const c3: ComplexNumber = new ComplexAlgebraic(1, 2)
     const noIm: ComplexNumber = new ComplexAlgebraic(1, 0)
-    const realMatrix = new NumMatrix(3, 3).init([[1, 1, 1], 
-                                                [1, 1, 0], 
-                                                [1, 0, 0]])
-    const realMatrix2 = new NumMatrix(3, 3).init([[2, 2, 2], 
-                                                        [2, 2, 1], 
-                                                        [2, 1, 1]])
-    const complexMatrix = new ComplexMatrix(3, 3).init([[c1, c2, c3], 
-                                                        [c2, c2, c2], 
-                                                        [c3, c2, c1]])
-    const complexMatrix2 = new ComplexMatrix(3, 3).init([[c1, c2, c3], 
-                                                        [c1, c2, c3], 
-                                                        [c1, c2, c3]])
-    const complexNoImaginary = new ComplexMatrix(3, 3).init([[noIm, noIm, noIm], 
-                                                            [noIm, noIm, noIm], 
-                                                            [noIm, noIm, noIm]])
+    const realMatrix = new NumMatrix(3, 3, [[1, 1, 1], 
+                                            [1, 1, 0], 
+                                            [1, 0, 0]])
+    const realMatrix2 = new NumMatrix(3, 3, [[2, 2, 2], 
+                                            [2, 2, 1], 
+                                            [2, 1, 1]])
+    const complexMatrix = new ComplexMatrix(3, 3, [[c1, c2, c3], 
+                                                    [c2, c2, c2], 
+                                                    [c3, c2, c1]])
+    const complexMatrix2 = new ComplexMatrix(3, 3, [[c1, c2, c3], 
+                                                    [c1, c2, c3], 
+                                                    [c1, c2, c3]])
+    const complexNoImaginary = new ComplexMatrix(3, 3, [[noIm, noIm, noIm], 
+                                                        [noIm, noIm, noIm], 
+                                                        [noIm, noIm, noIm]])
     
     /* Logs */
     console.log(" - - - - - - - - - Basic Test - - - - - - - - -")
