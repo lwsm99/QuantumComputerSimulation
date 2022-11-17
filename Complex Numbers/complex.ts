@@ -47,9 +47,10 @@ export class ComplexAlgebraic extends ComplexNumber {
     }
 
     public polar(): ComplexPolar {
-        const rad = Math.sqrt(this.a * this.a + this.b * this.b)
-        const phi = Math.atan2(this.b, this.a)
-        return new ComplexPolar(rad, phi)
+        const re = this.a, im = this.b
+        const r = Math.sqrt(re * re + im * im)
+        const phi = Math.atan2(im, re)
+        return new ComplexPolar(r, phi)
     }
 
     public re(): number {
@@ -72,7 +73,7 @@ export class ComplexPolar extends ComplexNumber {
     }
 
     public mul(c: ComplexPolar): ComplexPolar {
-        return new ComplexPolar(this.a * c.a, this.b * c.b)
+        return new ComplexPolar(this.a * c.a, this.b + c.b)
     }
 
     public con(): ComplexPolar {
@@ -80,8 +81,9 @@ export class ComplexPolar extends ComplexNumber {
     }
     
     public algebraic(): ComplexAlgebraic {
-        const re: number = this.a * Math.cos(this.b)
-        const im: number = this.a * Math.sin(this.b)
+        const r = this.a, phi = this.b
+        const re: number = r * Math.cos(phi)
+        const im: number = r * Math.sin(phi)
         return new ComplexAlgebraic(re, im)
     }
 
@@ -93,9 +95,3 @@ export class ComplexPolar extends ComplexNumber {
         return this.b
     }
 }
-
-// const cn1: ComplexNumber = new ComplexAlgebraic(15, 3)
-// console.log(cn1)
-// const cn2: ComplexNumber = cn1.polar()
-// console.log(cn2.algebraic())
-// console.log(cn2.add(cn1))
