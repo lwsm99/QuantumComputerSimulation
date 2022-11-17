@@ -192,6 +192,7 @@ export class ComplexMatrix {
     kroneckerProduct(matrix: ComplexMatrix): ComplexMatrix {
         var newMatrix: ComplexMatrix = new ComplexMatrix(this.rows * matrix.rows, this.columns * matrix.columns)
         var rowCounterThis: number = 0, rowCounterMatrix: number = 0
+        
         for (var newRow: number = 0; newRow < newMatrix.rows; newRow++) {
             var colCounterThis: number = 0, colcounterMatrix: number = 0
             if (newRow % matrix.rows === 0 && newRow !== 0) rowCounterThis++

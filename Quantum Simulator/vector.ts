@@ -1,40 +1,34 @@
 import { ComplexAlgebraic, ComplexNumber } from "../Complex Numbers/complex"
 
-interface Vector<Type> {
+abstract class Vector<Type> {
     values: Type[]
 
-    length(): number
-    setValues(values: Type[]): void
+    constructor(size: number) {
+        this.values = new Array<Type>(size)
+    }
+
+    abstract init(values?: Type[]): Vector<Type>
+    length(): number { return this.values.length }
+    compareLength(values: Type[] | undefined): Vector<Type> { 
+        if (values) values.length === this.length() ? this.values = values : console.log("Vector does not match given size, please try again\n")
+        return this 
+    }
 }
 
-export class numVector implements Vector<number> {
+export class numVector extends Vector<number> {
     values: number[]
 
-    constructor(size: number) {
-        this.values = new Array<number>(size).fill(0)
-    }
-
-    public length(): number {
-        return this.values.length
-    }
-    
-    public setValues(values: number[]) {
-        this.values = values
+    init(values?: number[]): Vector<number> {
+        this.values = this.values.fill(0)
+        return this.compareLength(values)
     }
 }
 
-export class complexVector implements Vector<ComplexNumber> {
+export class complexVector extends Vector<ComplexNumber> {
     values: ComplexNumber[]
 
-    constructor(size: number) {
-        this.values = new Array<ComplexNumber>(size).fill(new ComplexAlgebraic(0, 0))
-    }
-
-    public length(): number {
-        return this.values.length
-    }
-    
-    public setValues(values: ComplexNumber[]) {
-        this.values = values
+    init(values?: ComplexNumber[]): Vector<ComplexNumber> {
+        this.values = this.values.fill(new ComplexAlgebraic(0, 0))
+        return this.compareLength(values)
     }
 }
