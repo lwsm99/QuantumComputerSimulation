@@ -1,6 +1,5 @@
 # Quantum Simulator
-
-
+Dieser Text ist sehr stark inspiriert von Professor Herzbergs Text [Ein Simulator für Quantenschaltungen](https://github.com/denkspuren/qcsim/blob/main/qcsim.ipynb).
 
 ## Basics
 

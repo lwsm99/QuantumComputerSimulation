@@ -7,7 +7,8 @@ Um sich dem Quantencomputing zu nähern, haben wir begonnen, eine Bibliothek fü
 ## Wellenfunktion
 Die Schrödinger-Gleichung ist eine fundamentale Gleichung der Quantenmechanik. Sie beschreibt die zeitliche Veränderung eines quantenmechanischen Zustandes eines nichtrelativistischen Systems. Weitere Informationen zu ihrer Bedeutung und Funktionsweise findet man in der [Wavefunction README](Wavefunction/README.md).
 
-
+## Quantensimulator
+Die Grundlagen wurden erarbeitet, nun geht es darum einen Quantensimulator zu bauen. Für einen Quantensimulator brauchen wir eine Library um mit Matrizen zu arbeiten, diese haben wir selbst gebaut mit dem selben Konzept wie bei komplexen Zahlen. Der Quantensimulator ist daraufhin relativ simpel aufzubauen. Mehr Infos in der [Quantum Simulator README](Quantum%20Simulator/README.md).
 
 
 
@@ -19,3 +20,6 @@ In order to approach quantum computing we started coding a library for complex n
 
 ## Wavefunction
 The Schrödinger equation is a fundamental equation of quantum mechanics. It describes the temporal change of a quantum mechanical state of a non-relativistic system. You can find more information on what this means and how this works in the [Wavefunction README](Wavefunction/README.md).
+
+## Quantum simulator
+The basics have been worked out, now it is time to build a quantum simulator. For the quantum simulator we first need a library to work with matrices, so we built our own library using the same concept as for complex numbers. The quantum simulator is then relatively simple to build. More information in the [Quantum Simulator README](Quantum%20Simulator/README.md).
