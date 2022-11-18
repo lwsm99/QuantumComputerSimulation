@@ -19,16 +19,11 @@ abstract class Matrix<Type> {
     abstract setSum(matrix: Matrix<Type>, sum: Type, newRow: number, newCol: number, i: number): Type
     abstract kronValue(matrix: Matrix<Type>, m1Row: number, m1Col: number, m2Row: number, m2Col: number): Type
 
-    num(): NumMatrix | ComplexMatrix { return this as unknown as NumMatrix }
+    init(values?: Type[][]): Matrix<Type> { return this.reset().compareLength(values) }
+    getValue(row: number, col: number): Type { return this.values[row][col] }
+
+    real(): RealMatrix | ComplexMatrix { return this as unknown as RealMatrix }
     complex(): ComplexMatrix { return this as unknown as ComplexMatrix }
-
-    init(values?: Type[][]): Matrix<Type> {
-        return this.reset().compareLength(values)
-    }
-
-    getValue(row: number, col: number): Type {
-        return this.values[row][col]
-    }
 
     multiply(matrix: Matrix<Type>, sumMatrix: Matrix<Type>, sum: Type): Matrix<Type> {
         if (this.columns !== matrix.rows) {
@@ -92,7 +87,7 @@ abstract class Matrix<Type> {
     }
 }
 
-export class NumMatrix extends Matrix<number> {
+export class RealMatrix extends Matrix<number> {
     values: number[][]
 
     reset(): Matrix<number> {
@@ -104,11 +99,11 @@ export class NumMatrix extends Matrix<number> {
     }
 
     mul(matrix: Matrix<number>): Matrix<number> {
-        return this.multiply(matrix, new NumMatrix(this.rows, matrix.columns), 0)
+        return this.multiply(matrix, new RealMatrix(this.rows, matrix.columns), 0)
     }
 
     kronecker(matrix: Matrix<number>): Matrix<number> {
-        return this.kroneckerProduct(matrix, new NumMatrix(this.rows, matrix.columns))
+        return this.kroneckerProduct(matrix, new RealMatrix(this.rows, matrix.columns))
     }
 
     setSum(matrix: Matrix<number>, sum: number, row: number, col: number, idx: number): number {
@@ -121,6 +116,7 @@ export class NumMatrix extends Matrix<number> {
 
     complex(): ComplexMatrix {
         var newComplexMatrix = new ComplexMatrix(this.rows, this.columns)
+        
         for (var row = 0; row < this.rows; row++) {
             for (var col = 0; col < this.columns; col++) {
                 newComplexMatrix.values[row][col] = new ComplexAlgebraic(this.values[row][col], 0)
@@ -157,17 +153,18 @@ export class ComplexMatrix extends Matrix<ComplexNumber> {
         return this.values[m1Row][m1Col].mul(matrix.values[m2Row][m2Col])
     }
 
-    num(): NumMatrix | ComplexMatrix {
-        var newMatrix = new NumMatrix(this.rows, this.columns)
+    real(): RealMatrix | ComplexMatrix {
+        var realMatrix = new RealMatrix(this.rows, this.columns)
+
         for (var row = 0; row < this.rows; row++) {
             for (var col = 0; col < this.columns; col++) {
                 if (this.values[row][col].b !== 0) {
-                    console.log("Not possible to transform this ComplexMatrix to NumMatrix: Imaginary not 0")
+                    console.log("Not possible to transform this ComplexMatrix to RealMatrix: Imaginary not 0")
                     return this
                 }
-                newMatrix.values[row][col] = this.values[row][col].a
+                realMatrix.values[row][col] = this.values[row][col].a
             }
         }
-        return newMatrix
+        return realMatrix
     }
 }

@@ -1,4 +1,4 @@
-import { NumMatrix, ComplexMatrix } from "./matrix"
+import { RealMatrix, ComplexMatrix } from "./matrix"
 import { ComplexAlgebraic, ComplexNumber } from "../Complex Numbers/complex"
 
 /**
@@ -10,8 +10,8 @@ kroeneckerTest()
 
 function kroeneckerTest() {
     /* Constants */
-    const kronecker = new NumMatrix(3, 2, [[1, 2], [3, 4], [5, 6]])
-    const kronecker2 = new NumMatrix(2, 2, [[7, 8], [9, 0]])
+    const kronecker = new RealMatrix(3, 2, [[1, 2], [3, 4], [5, 6]])
+    const kronecker2 = new RealMatrix(2, 2, [[7, 8], [9, 0]])
 
     /* Logs */
     console.log(" - - - - - - - - - Kronecker Test - - - - - - - - -")
@@ -26,10 +26,10 @@ function basicTest(): void {
     const c2: ComplexNumber = new ComplexAlgebraic(1, 1)
     const c3: ComplexNumber = new ComplexAlgebraic(1, 2)
     const noIm: ComplexNumber = new ComplexAlgebraic(1, 0)
-    const realMatrix = new NumMatrix(3, 3, [[1, 1, 1], 
+    const realMatrix = new RealMatrix(3, 3, [[1, 1, 1], 
                                             [1, 1, 0], 
                                             [1, 0, 0]])
-    const realMatrix2 = new NumMatrix(3, 3, [[2, 2, 2], 
+    const realMatrix2 = new RealMatrix(3, 3, [[2, 2, 2], 
                                             [2, 2, 1], 
                                             [2, 1, 1]])
     const complexMatrix = new ComplexMatrix(3, 3, [[c1, c2, c3], 
@@ -49,7 +49,7 @@ function basicTest(): void {
     console.log("\nMultiplication between ComplexMatrix and ComplexMatrix")
     console.log(complexMatrix.mul(complexMatrix2).values);
     console.log("\nMultiplication between Matrix and ComplexMatrix:")
-    console.log(realMatrix.complex().mul(complexMatrix).num().values)
+    console.log(realMatrix.complex().mul(complexMatrix).real().values)
     console.log("\nMultiplication between Matrix and ComplexMatrix with successful transformation to Matrix:")
-    console.log(realMatrix.complex().mul(complexNoImaginary).num())
+    console.log(realMatrix.complex().mul(complexNoImaginary).real())
 }
