@@ -25,14 +25,15 @@ abstract class Matrix<Type> {
     real(): RealMatrix | ComplexMatrix { return this as unknown as RealMatrix }
     complex(): ComplexMatrix { return this as unknown as ComplexMatrix }
 
-    multiply(matrix: Matrix<Type>, sumMatrix: Matrix<Type>, sum: Type): Matrix<Type> {
+    multiply(matrix: Matrix<Type>, sumMatrix: Matrix<Type>, reset: Type): Matrix<Type> {
         if (this.columns !== matrix.rows) {
             console.log("Multiplication not possible: not an equal amount of columns to rows")
             return this
         }
 
-        for (let newRow = 0; newRow < this.rows; newRow++) {
-            for (let newCol = 0; newCol < matrix.columns; newCol++) {
+        for (let newRow = 0; newRow < sumMatrix.rows; newRow++) {
+            for (let newCol = 0; newCol < sumMatrix.columns; newCol++) {
+                let sum = reset
                 for (let i = 0; i < this.rows; i++) {
                     sum = this.setSum(matrix, sum, newRow, newCol, i)
                 }
@@ -53,7 +54,7 @@ abstract class Matrix<Type> {
             for (var newCol = 0; newCol < kronMatrix.columns; newCol++) {
                 if (newCol % matrix.columns === 0 && newCol !== 0) colCounterThis++
                 colcounterMatrix = newCol % matrix.columns
-                kronMatrix.values[newRow][newCol] = this.kronValue(matrix, rowCounterThis, rowCounterMatrix, colCounterThis, colcounterMatrix)
+                kronMatrix.values[newRow][newCol] = this.kronValue(matrix, rowCounterThis, colCounterThis, rowCounterMatrix, colcounterMatrix)
             }
         }
         return kronMatrix
@@ -103,7 +104,7 @@ export class RealMatrix extends Matrix<number> {
     }
 
     kronecker(matrix: Matrix<number>): Matrix<number> {
-        return this.kroneckerProduct(matrix, new RealMatrix(this.rows, matrix.columns))
+        return this.kroneckerProduct(matrix, new RealMatrix(this.rows * matrix.rows, this.columns * matrix.columns))
     }
 
     setSum(matrix: Matrix<number>, sum: number, row: number, col: number, idx: number): number {
