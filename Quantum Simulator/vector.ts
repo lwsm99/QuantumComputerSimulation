@@ -16,7 +16,7 @@ abstract class Vector<Type> {
     }
 }
 
-export class numVector extends Vector<number> {
+export class RealVector extends Vector<number> {
     values: number[]
 
     init(values?: number[]): Vector<number> {
@@ -25,7 +25,7 @@ export class numVector extends Vector<number> {
     }
 }
 
-export class complexVector extends Vector<ComplexNumber> {
+export class ComplexVector extends Vector<ComplexNumber> {
     values: ComplexNumber[]
 
     init(values?: ComplexNumber[]): Vector<ComplexNumber> {
