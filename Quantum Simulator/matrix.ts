@@ -1,11 +1,19 @@
 import { ComplexAlgebraic, ComplexNumber } from "../Complex Numbers/complex"
 
 // [TODO]:
-// - mul with scalar OR matrix
-// - split up mul into steps (row * col)
-// - kronecker uses mul
-// - try traverseMatrix function again
-// - split up matrix into vectors and only use vector * vector or scalar * matrix
+    // - mul with scalar OR matrix
+    // - split up mul into steps (matrix -> vec -> scalar)
+    // - kronecker uses mul
+
+// IDEAS
+    // COMPLEX()
+    // return this.copy().setValues(this.map(vec => vec.complex(this.columns)))
+    
+    // COPY()
+    // return new ComplexMatrix(this.rows, this.columns, this.map(vec => vec.copy()))
+
+    // VECTOR CLASS COMPLEX()
+    // return this.copy().setValues(this.map(scalar => scalar = new ComplexAlgebraic(scalar, 0))
 
 abstract class Matrix<Type> {
     rows: number
