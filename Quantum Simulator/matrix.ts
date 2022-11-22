@@ -1,5 +1,12 @@
 import { ComplexAlgebraic, ComplexNumber } from "../Complex Numbers/complex"
 
+// [TODO]:
+// - mul with scalar OR matrix
+// - split up mul into steps (row * col)
+// - kronecker uses mul
+// - try traverseMatrix function again
+// - split up matrix into vectors and only use vector * vector or scalar * matrix
+
 abstract class Matrix<Type> {
     rows: number
     columns: number
@@ -34,7 +41,7 @@ abstract class Matrix<Type> {
         for (let newRow = 0; newRow < sumMatrix.rows; newRow++) {
             for (let newCol = 0; newCol < sumMatrix.columns; newCol++) {
                 let sum = reset
-                for (let i = 0; i < this.rows; i++) {
+                for (let i = 0; i < this.columns; i++) {
                     sum = this.setSum(matrix, sum, newRow, newCol, i)
                 }
                 sumMatrix.values[newRow][newCol] = sum
