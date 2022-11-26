@@ -1,6 +1,6 @@
 import { ComplexAlgebraic, ComplexNumber } from "../Complex Numbers/complex"
 
-abstract class Vector<Type> {
+export abstract class Vector<Type> {
     values: Type[]
 
     constructor(size: number, values?: Type[]) {
@@ -9,10 +9,21 @@ abstract class Vector<Type> {
     }
 
     abstract init(values?: Type[]): Vector<Type>
+    abstract mul(vector: Vector<Type>): Type
+
     length(): number { return this.values.length }
-    compareLength(values: Type[] | undefined): Vector<Type> { 
+
+    real(): RealVector { return this as unknown as RealVector }
+    complex(): ComplexVector { return this as unknown as ComplexVector }
+
+    compareLength(values: Type[] | undefined): Vector<Type> {
         if (values) values.length === this.length() ? this.values = values : console.log("Vector does not match given size, please try again\n")
         return this 
+    }
+
+    throwError(text: String): any { 
+        console.log(text)
+        return this
     }
 }
 
@@ -23,6 +34,18 @@ export class RealVector extends Vector<number> {
         this.values = this.values.fill(0)
         return this.compareLength(values)
     }
+
+    scalarMul(scalar: number): RealVector {
+        return new RealVector(this.length(), this.values.map(value => value * scalar))
+    }
+
+    mul(vector: Vector<number>): number {
+        return this.values.reduce((sum, el, idx) => sum += el * vector.values[idx], 0)
+    }
+
+    complex(): ComplexVector {
+        return new ComplexVector(this.length(), this.values.map(el => new ComplexAlgebraic(el, 0)))
+    }
 }
 
 export class ComplexVector extends Vector<ComplexNumber> {
@@ -31,5 +54,17 @@ export class ComplexVector extends Vector<ComplexNumber> {
     init(values?: ComplexNumber[]): Vector<ComplexNumber> {
         this.values = this.values.fill(new ComplexAlgebraic(0, 0))
         return this.compareLength(values)
+    }
+
+    scalarMul(scalar: ComplexNumber): ComplexVector {
+        return new ComplexVector(this.length(), this.values.map(value => value.mul(scalar)))
+    }
+
+    mul(vector: Vector<ComplexNumber>): ComplexNumber {
+        return this.values.reduce((sum, el, idx) => sum = sum.add(el.mul(vector.values[idx])), new ComplexAlgebraic(0, 0))
+    }
+
+    real(): RealVector {
+        return this.values.every(el => el.b === 0) ? new RealVector(this.length(), this.values.map(el => el.a)) : this.throwError("All imaginary elements have to be 0 to transform to Real.\n")
     }
 }
