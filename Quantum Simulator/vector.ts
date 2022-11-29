@@ -10,6 +10,7 @@ export abstract class Vector<Type> {
 
     abstract init(values?: Type[]): Vector<Type>
     abstract mul(vector: Vector<Type>): Type
+    abstract scalarMul(scalar: Type): Vector<Type>
 
     length(): number { return this.values.length }
 
@@ -31,12 +32,13 @@ export class RealVector extends Vector<number> {
     values: number[]
 
     init(values?: number[]): Vector<number> {
-        this.values = this.values.fill(0)
+        this.values.forEach(val => val = 0)
         return this.compareLength(values)
     }
 
-    scalarMul(scalar: number): RealVector {
-        return new RealVector(this.length(), this.values.map(value => value * scalar))
+    scalarMul(scalar: number): Vector<number> {
+        this.values.forEach(value => value * scalar)
+        return this
     }
 
     mul(vector: Vector<number>): number {
@@ -52,12 +54,13 @@ export class ComplexVector extends Vector<ComplexNumber> {
     values: ComplexNumber[]
 
     init(values?: ComplexNumber[]): Vector<ComplexNumber> {
-        this.values = this.values.fill(new ComplexAlgebraic(0, 0))
+        this.values.forEach(val => val = new ComplexAlgebraic(0, 0))
         return this.compareLength(values)
     }
 
-    scalarMul(scalar: ComplexNumber): ComplexVector {
-        return new ComplexVector(this.length(), this.values.map(value => value.mul(scalar)))
+    scalarMul(scalar: ComplexNumber): Vector<ComplexNumber> {
+        this.values.forEach(value => value.mul(scalar))
+        return this
     }
 
     mul(vector: Vector<ComplexNumber>): ComplexNumber {

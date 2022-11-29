@@ -14,7 +14,7 @@ export abstract class ComplexNumber {
 
     add(c: ComplexNumber): ComplexNumber { return this.algebraic().add(c.algebraic()) }
     sub(c: ComplexNumber): ComplexNumber { return this.add(c.neg()) }
-    mul(c: ComplexNumber): ComplexNumber { return this.polar().mul(c.polar()) }
+    mul(c: ComplexNumber): ComplexNumber { return this.polar().mul(c.polar()).algebraic() }
     div(c: ComplexNumber): ComplexNumber { return this.mul(c.inv()) }
     abs(): number { return this.algebraic().abs() }
     abstract con(): ComplexNumber
