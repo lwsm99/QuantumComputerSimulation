@@ -15,7 +15,6 @@ abstract class Matrix<Type> {
     
     abstract toIdent(): Matrix<Type>
     abstract transpose(): Matrix<Type>
-    abstract scalarMul(scalar: Type): Matrix<Type>
     abstract mul(matrix: Matrix<Type>): Matrix<Type>
     abstract kron(matrix: Matrix<Type>): Matrix<Type>
 
@@ -29,6 +28,11 @@ abstract class Matrix<Type> {
 
     real(): RealMatrix | ComplexMatrix { return this as unknown as RealMatrix }
     complex(): ComplexMatrix { return this as unknown as ComplexMatrix }
+
+    scalarMul(scalar: Type): Matrix<Type> {
+        this.values.forEach(vec => vec.scalarMul(scalar))
+        return this
+    }
 
     setDiagonals(value: Type): Matrix<Type> {
         if (this.rows !== this.columns) this.throwError("Matrix has to be square to set diagonals.\n")
@@ -55,23 +59,24 @@ export class RealMatrix extends Matrix<number> {
     }
 
     transpose(): Matrix<number> {
-        return new RealMatrix(this.columns, this.rows, this.values.map((vec, vecIndex) => new RealVector(this.columns, vec.values.map((_, colIndex) => this.values[colIndex][vecIndex]))))
-    }
-
-    scalarMul(scalar: number): Matrix<number> {
-        return new RealMatrix(this.rows, this.columns, this.values.map(vec => vec.scalarMul(scalar)))
+        this.values.forEach((vec, vecIndex) => {
+            new RealVector(this.columns, vec.values.map((_, colIndex) => this.values[colIndex][vecIndex]))
+        })
+        return this
     }
 
     mul(matrix: Matrix<number>): Matrix<number> {
         if (this.columns !== matrix.rows) this.throwError("Multiplication not possible: not an equal amount of columns to rows")
-        return new RealMatrix(this.rows, matrix.columns, this.values.map(vec => new RealVector(this.rows, matrix.transpose().values.map(vec2 => vec.mul(vec2)))))
+        return new RealMatrix(this.rows, matrix.columns, this.values.map(vec =>
+            new RealVector(this.rows, matrix.transpose().values.map(vec2 => vec.mul(vec2))))
+        )
     }
 
     kron(matrix: Matrix<number>): Matrix<number> {
         // [TODO]: make this work
         // 1) multiply matrizes with scalarMul
         // 2) concatenate matrizes (new method)
-        return this
+        return new RealMatrix(this.rows * matrix.rows, this.columns * matrix.columns)
     }
 
     complex(): ComplexMatrix {
@@ -87,11 +92,10 @@ export class ComplexMatrix extends Matrix<ComplexNumber> {
     }
 
     transpose(): Matrix<ComplexNumber> {
-        return new ComplexMatrix(this.columns, this.rows, this.values.map((vec, vecIndex) => new ComplexVector(this.columns, vec.values.map((_, colIndex) => this.values[colIndex][vecIndex]))))
-    }
-
-    scalarMul(scalar: ComplexNumber): Matrix<ComplexNumber> {
-        return new ComplexMatrix(this.rows, this.columns, this.values.map(vec => vec.scalarMul(scalar)))
+        this.values.forEach((vec, vecIndex) => {
+            new ComplexVector(this.columns, vec.values.map((_, colIndex) => this.values[colIndex][vecIndex]))
+        })
+        return this
     }
 
     mul(matrix: Matrix<ComplexNumber>): Matrix<ComplexNumber> {
@@ -103,7 +107,7 @@ export class ComplexMatrix extends Matrix<ComplexNumber> {
         // [TODO]: make this work
         // 1) multiply matrizes with scalarMul
         // 2) concatenate matrizes (new method)
-        return this
+        return new ComplexMatrix(this.rows * matrix.rows, this.columns * matrix.columns)
     }
 
     real(): RealMatrix {
