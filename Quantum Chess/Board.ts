@@ -18,17 +18,38 @@ export class Board {
         this.occupation = []
         for (let i = 0; i < 64; i++) {
             if (i < 8) {
-                this.tiles[i] = new Spot(new pieceOrder[i](true), i)
+                this.tiles[i] = new Spot(new pieceOrder[i](false), i)
             } else if (i < 16) {
-                this.tiles[i] = new Spot(new Pawn(true), i)
-            } else if (i >= 56) {
-                this.tiles[i] = new Spot(new pieceOrder[i - 56](false), i)
-            } else if (i >= 48) {
                 this.tiles[i] = new Spot(new Pawn(false), i)
+            } else if (i >= 56) {
+                this.tiles[i] = new Spot(new pieceOrder[i - 56](true), i)
+            } else if (i >= 48) {
+                this.tiles[i] = new Spot(new Pawn(true), i)
             } else {
                 this.tiles[i] = new Spot(null, i)
             }
             this.occupation.push(false)
         }
     }
+
+    toString(): string {
+        let boardString = ""
+        for (let i = 0; i < 64; i++) {
+            if (this.tiles[i].piece) {
+                const piece = this.tiles[i].piece?.constructor.name === "Knight" ? this.tiles[i].piece?.constructor.name.charAt(1) : this.tiles[i].piece?.constructor.name.charAt(0)
+                boardString += this.tiles[i].piece?.white ? piece?.toUpperCase() : piece?.toLowerCase()
+            } else {
+                boardString += "_"
+            }
+            if ((i + 1) % 8 === 0) {
+                boardString += "\n"
+            }
+        }
+        return boardString
+    }
 }
+
+const board = new Board()
+board.resetBoard()
+console.log(board.toString())
+console.log(board.tiles[60].piece?.possibleMoves(board, board.tiles[60]))
