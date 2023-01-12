@@ -8,32 +8,32 @@ export abstract class Piece {
   constructor(white: boolean) {
     this.white = white
   }
-  
-  public abstract canMove(board: Board, start: Spot, end: Spot): boolean
 
-  public jump(source: number, target: number) {
+  public abstract possibleMoves(board: Board, start: Spot): number[]
+
+  public jump(board: Board, source: number, target: number) {
     
   }
 
-  public slide(source: number, target: number) {
+  public slide(board: Board, source: number, target: number) {
     const path: number = 0
   }
 
-  public splitJump(source: number, target: number, target2: number) {
+  public splitJump(board: Board, source: number, target: number, target2: number) {
 
   }
 
-  public splitSlide(source: number, target: number, target2: number) {
+  public splitSlide(board: Board, source: number, target: number, target2: number) {
     const path: number = 0
     const path2: number = 0
 
   }
 
-  public mergeJump(source: number, source2: number, target: number) {
+  public mergeJump(board: Board, source: number, source2: number, target: number) {
 
   }
 
-  public mergeSlide(source: number, source2: number, target: number) {
+  public mergeSlide(board: Board, source: number, source2: number, target: number) {
     const path: number = 0
     const path2: number = 0
   }

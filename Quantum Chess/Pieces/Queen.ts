@@ -7,7 +7,9 @@ export class Queen extends Piece {
         super(white);
     }
 
-    public canMove(board: Board, start: Spot, end: Spot): boolean {
-        return true
+    public possibleMoves(board: Board, start: Spot): number[] {
+        const possibleMoves = []
+
+        return possibleMoves
     }
 }
