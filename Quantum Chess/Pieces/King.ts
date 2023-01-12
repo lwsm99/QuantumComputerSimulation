@@ -15,7 +15,7 @@ export class King extends Piece {
     }
 
     public canMove(board: Board, start: Spot, end: Spot): boolean {
-        return end.piece.white !== this.white && (Math.abs(start.pos - end.pos) === 1 || this.isValidCastling(board, start, end))
+        return end.piece?.white !== this.white && (Math.abs(start.pos - end.pos) === 1 || this.isValidCastling(board, start, end))
     }
     
     // Check if castling is valid
