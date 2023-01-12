@@ -14,7 +14,7 @@ export class QState {
     op(operator: ComplexMatrix, i: number = 0) {
         const eyeL = new ComplexMatrix(2**i, 2**i).toIdent()
         const eyeR = new ComplexMatrix(2**(this.qubits - i - Math.floor(Math.log(operator.rows))), 2**(this.qubits - i - Math.floor(Math.log(operator.rows)))).toIdent()
-        this.state = eyeL.kronecker(operator).kronecker(eyeR).mul(this.state)
+        this.state = eyeL.kron(operator).kron(eyeR).mul(this.state)
         return this
     }
 

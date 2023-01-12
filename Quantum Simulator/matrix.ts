@@ -20,14 +20,13 @@ abstract class Matrix<Type> {
 
     init(values?: Vector<Type>[]): Matrix<Type> { return this.reset().compareLength(values) }
     getValue(row: number, col: number): Type { return this.values[row][col] }
+    real(): RealMatrix | ComplexMatrix { return this as unknown as RealMatrix }
+    complex(): ComplexMatrix { return this as unknown as ComplexMatrix }
 
     reset(): Matrix<Type> {
         this.values = this.values.map(vec => vec.init())
         return this
     }
-
-    real(): RealMatrix | ComplexMatrix { return this as unknown as RealMatrix }
-    complex(): ComplexMatrix { return this as unknown as ComplexMatrix }
 
     scalarMul(scalar: Type): Matrix<Type> {
         this.values.forEach(vec => vec.scalarMul(scalar))
@@ -74,9 +73,15 @@ export class RealMatrix extends Matrix<number> {
 
     kron(matrix: Matrix<number>): Matrix<number> {
         // [TODO]: make this work
-        // 1) multiply matrizes with scalarMul
-        // 2) concatenate matrizes (new method)
-        return new RealMatrix(this.rows * matrix.rows, this.columns * matrix.columns)
+        // 1) multiply matrices with scalarMul
+        // 2) concatenate matrices
+
+        // this.values.map(vec => new RealVector(this.rows * 2, vec.values.map(scalar => matrix.scalarMul(scalar))))
+        //return new RealMatrix(this.rows * matrix.rows, this.columns * matrix.columns)
+
+        // this.values = this.values.map(vec => vec.values.map(value => matrix.scalarMul(value)))
+
+        return this
     }
 
     complex(): ComplexMatrix {
@@ -100,13 +105,15 @@ export class ComplexMatrix extends Matrix<ComplexNumber> {
 
     mul(matrix: Matrix<ComplexNumber>): Matrix<ComplexNumber> {
         if (this.columns !== matrix.rows) this.throwError("Multiplication not possible: not an equal amount of columns to rows")
-        return new ComplexMatrix(this.rows, matrix.columns, this.values.map(vec => new ComplexVector(this.rows, matrix.transpose().values.map(vec2 => vec.mul(vec2)))))
+        return new ComplexMatrix(this.rows, matrix.columns, this.values.map(
+            vec => new ComplexVector(this.rows, matrix.transpose().values.map(vec2 => vec.mul(vec2))))
+        )
     }
 
     kron(matrix: Matrix<ComplexNumber>): Matrix<ComplexNumber> {
         // [TODO]: make this work
-        // 1) multiply matrizes with scalarMul
-        // 2) concatenate matrizes (new method)
+        // 1) multiply matrices with scalarMul
+        // 2) concatenate matrices
         return new ComplexMatrix(this.rows * matrix.rows, this.columns * matrix.columns)
     }
 
