@@ -3,18 +3,19 @@ import { Spot } from "../Spot"
 import { Board } from "../Board"
 import { Rook } from "./Rook"
 
-class King extends Piece {
+export class King extends Piece {
     public castlingDone: boolean = false
 
     constructor(white: boolean) {
         super(white);
     }
 
-    public canMove(board: Board, start: Spot, end: Spot): boolean {
-        const x = Math.abs(start.x - end.x)
-        const y = Math.abs(start.y - end.y)
+    public availableMoves(board: Board) {
+        
+    }
 
-        return end.piece.white !== this.white && (x * y === 1 || this.isValidCastling(board, start, end))
+    public canMove(board: Board, start: Spot, end: Spot): boolean {
+        return end.piece.white !== this.white && (Math.abs(start.pos - end.pos) === 1 || this.isValidCastling(board, start, end))
     }
     
     // Check if castling is valid
@@ -24,22 +25,22 @@ class King extends Piece {
 
     // Check if the starting and ending position are correct
     public isCastlingMove(start: Spot, end: Spot): boolean {
-        return (start.x === 4 && start.y === 0 && end.x === 6 && end.y === 0) || (start.x === 4 && start.y === 7 && end.x === 6 && end.y === 7) || (start.x === 4 && start.y === 0 && end.x === 2 && end.y === 0) || (start.x === 4 && start.y === 7 && end.x === 2 && end.y === 7)
+        return (start.pos === 4 && end.pos === 6) || (start.pos === 4 && end.pos === 2) || (start.pos === 60 && end.pos === 62) || (start.pos === 60 && end.pos === 58)
     }
 
     // Check if the path between the king and the rook is clear
     public isCastlingPathClear(board: Board, start: Spot, end: Spot): boolean {
-        if (start.x < end.x) {
+        if (start.pos < end.pos) {
             // King side castling
-            for (let i = start.x + 1; i < end.x; i++) {
-                if (board.tiles[i][start.y].piece !== null) {
+            for (let i = start.pos + 1; i < end.pos; i++) {
+                if (board.tiles[i].piece !== null) {
                     return false
                 }
             }
         } else {
             // Queen side castling
-            for (let i = start.x - 1; i > end.x; i--) {
-                if (board.tiles[i][start.y].piece !== null) {
+            for (let i = start.pos - 1; i > end.pos; i--) {
+                if (board.tiles[i].piece !== null) {
                     return false
                 }
             }
@@ -49,6 +50,6 @@ class King extends Piece {
 
     // Check if the rook is available for castling
     public isCastlingRookAvailable(board: Board, start: Spot, end: Spot): boolean {
-        return (start.x < end.x && board.tiles[7][start.y].piece instanceof Rook) || (start.x > end.x && board.tiles[0][start.y].piece instanceof Rook)
+        return (start.pos < end.pos && board.tiles[7].piece instanceof Rook) || (start.pos > end.pos && board.tiles[0].piece instanceof Rook)
     }
 }
