@@ -7,7 +7,7 @@ export class Rook extends Piece {
         super(white)
     }
 
-    possibleMoves(board: Board, start: Spot): number[] {
+    public possibleMoves(board: Board, start: Spot): number[] {
         return [-1, 1, -8, 8].map(i => {
             let moves: number[] = []
             for (let j = start.pos + i; j >= 0 && j < 64 && (j % 8 === start.pos % 8 || Math.floor(j / 8) === Math.floor(start.pos / 8)); j += i) {
