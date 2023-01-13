@@ -24,8 +24,7 @@ export class Board {
             } else if (i >= 56) {
                 this.tiles[i] = new Spot(new pieceOrder[i - 56](true), i)
             } else if (i >= 48) {
-                // this.tiles[i] = new Spot(new Pawn(true), i)
-                this.tiles[i] = new Spot(null, i)
+                this.tiles[i] = new Spot(new Pawn(true), i)
             } else {
                 this.tiles[i] = new Spot(null, i)
             }
@@ -63,3 +62,7 @@ console.log('White right Knight Movement: ' + board.tiles[62].piece?.possibleMov
 console.log('White right Rook Movement: ' + board.tiles[63].piece?.possibleMoves(board, board.tiles[63]))
 console.log('Black Pawn Movement: ' + board.tiles[11].piece?.possibleMoves(board, board.tiles[11]))
 console.log('Black Pawn Movement: ' + board.tiles[8].piece?.possibleMoves(board, board.tiles[8]))
+
+board.tiles[52].piece?.move(board, 52, 36)
+console.log(board.toString())
+console.log('White King Movement: ' + board.tiles[60].piece?.possibleMoves(board, board.tiles[60]))

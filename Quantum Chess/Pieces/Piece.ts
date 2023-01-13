@@ -3,7 +3,6 @@ import { Spot } from "../Spot"
 
 export abstract class Piece {
   public white: boolean
-  public alive: boolean = true
 
   constructor(white: boolean) {
     this.white = white
@@ -11,30 +10,23 @@ export abstract class Piece {
 
   public abstract possibleMoves(board: Board, start: Spot): number[]
 
-  public jump(board: Board, source: number, target: number) {
-    
+  public move(board: Board, source: number, target: number) {
+    const piece = board.tiles[source].piece
+    board.tiles[source].piece = null
+    board.tiles[target].piece = piece
   }
 
-  public slide(board: Board, source: number, target: number) {
-    const path: number = 0
+  public splitMove(board: Board, source: number, target: number, target2: number) {
+    const piece = board.tiles[source].piece
+    board.tiles[source].piece = null
+    board.tiles[target].piece = piece
+    board.tiles[target2].piece = piece
   }
 
-  public splitJump(board: Board, source: number, target: number, target2: number) {
-
-  }
-
-  public splitSlide(board: Board, source: number, target: number, target2: number) {
-    const path: number = 0
-    const path2: number = 0
-
-  }
-
-  public mergeJump(board: Board, source: number, source2: number, target: number) {
-
-  }
-
-  public mergeSlide(board: Board, source: number, source2: number, target: number) {
-    const path: number = 0
-    const path2: number = 0
+  public mergeMove(board: Board, source: number, source2: number, target: number) {
+    const piece = board.tiles[source].piece
+    board.tiles[source].piece = null
+    board.tiles[source2].piece = null
+    board.tiles[target].piece = piece
   }
 }
