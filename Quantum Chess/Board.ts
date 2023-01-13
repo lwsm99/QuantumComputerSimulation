@@ -52,4 +52,6 @@ export class Board {
 const board = new Board()
 board.resetBoard()
 console.log(board.toString())
-console.log(board.tiles[60].piece?.possibleMoves(board, board.tiles[60]))
+console.log('White King Movement: ' + board.tiles[60].piece?.possibleMoves(board, board.tiles[60]))
+console.log('White left Rook Movement: ' + board.tiles[56].piece?.possibleMoves(board, board.tiles[56]))
+console.log('White right Rook Movement: ' + board.tiles[63].piece?.possibleMoves(board, board.tiles[63]))

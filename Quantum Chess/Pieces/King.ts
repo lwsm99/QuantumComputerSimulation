@@ -6,7 +6,7 @@ export class King extends Piece {
     // public castlingDone: boolean = false
 
     constructor(white: boolean) {
-        super(white);
+        super(white)
     }
 
     public possibleMoves(board: Board, start: Spot): number[] {
