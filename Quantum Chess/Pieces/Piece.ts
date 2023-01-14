@@ -10,23 +10,23 @@ export abstract class Piece {
 
   public abstract possibleMoves(board: Board, start: Spot): number[]
 
-  public move(board: Board, source: number, target: number) {
-    const piece = board.tiles[source].piece
-    board.tiles[source].piece = null
-    board.tiles[target].piece = piece
+  public move(source: Spot, target: Spot) {
+    const piece = source.piece
+    source.piece = null
+    target.piece = piece
   }
 
-  public splitMove(board: Board, source: number, target: number, target2: number) {
-    const piece = board.tiles[source].piece
-    board.tiles[source].piece = null
-    board.tiles[target].piece = piece
-    board.tiles[target2].piece = piece
+  public splitMove(source: Spot, target: Spot, target2: Spot) {
+    const piece = source.piece
+    source.piece = null
+    target.piece = piece
+    target2.piece = piece
   }
 
-  public mergeMove(board: Board, source: number, source2: number, target: number) {
-    const piece = board.tiles[source].piece
-    board.tiles[source].piece = null
-    board.tiles[source2].piece = null
-    board.tiles[target].piece = piece
+  public mergeMove(source: Spot, source2: Spot, target: Spot) {
+    const piece = source.piece
+    source.piece = null
+    source2.piece = null
+    target.piece = piece
   }
 }
