@@ -1,3 +1,4 @@
 *.js
+!Quantum Chess/frontend/*.js
 node_modules/
 *.json
