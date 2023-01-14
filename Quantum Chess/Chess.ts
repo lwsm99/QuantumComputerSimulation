@@ -15,6 +15,6 @@ console.log('White right Rook Movement: ' + board.tiles[63].piece?.possibleMoves
 console.log('Black Pawn Movement: ' + board.tiles[11].piece?.possibleMoves(board, board.tiles[11]))
 console.log('Black Pawn Movement: ' + board.tiles[8].piece?.possibleMoves(board, board.tiles[8]))
 
-board.tiles[52].piece?.move(board, 52, 36)
+board.tiles[52].piece?.move(board.tiles[52], board.tiles[36])
 console.log(board.toString())
 console.log('White King Movement: ' + board.tiles[60].piece?.possibleMoves(board, board.tiles[60]))

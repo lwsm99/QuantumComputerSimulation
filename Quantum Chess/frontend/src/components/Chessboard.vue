@@ -22,7 +22,8 @@ export default {
     board.resetBoard()
     return {
       chessboard: board,
-      selected: null
+      selected: null,
+      availableMoves: null,
     }
   },
   methods: {
@@ -32,6 +33,14 @@ export default {
 
     // Set selected piece
     setSelected(i, j) {
+      // if piece selected and tile is selected, move piece
+      if (this.selected !== null && this.availableMoves !== null) {
+        console.log(this.chessboard.tiles[this.selected].piece)
+        console.log(this.availableMoves)
+        this.chessboard.tiles[this.selected].piece.move(this.chessboard.tiles[this.selected], this.chessboard.tiles[8 * i + j - 9])
+        this.selected = null
+        this.availableMoves = null
+      }
       // reset available colors
       document.querySelectorAll('.available').forEach(element => {
         element.classList.remove('available')
@@ -40,6 +49,8 @@ export default {
       document.querySelectorAll('.selected').forEach(element => {
         element.classList.remove('selected')
       })
+      // reset available moves
+      this.availableMoves = null
       // if already selected, deselect and return
       if (this.selected !== null && (this.selected === 8 * i + j - 9 || this.chessboard.tiles[8 * i + j - 9].piece === null)) {
         this.selected = null
@@ -55,10 +66,11 @@ export default {
     },
 
     // Get selected piece
-    getSelectedPiece(tileNumber) {
-      this.colorAvailableMoves(this.chessboard.tiles[tileNumber].piece?.possibleMoves(this.chessboard, this.chessboard.tiles[tileNumber]))
+    getSelectedPiece(tileWithPiece) {
+      this.availableMoves = this.chessboard.tiles[tileWithPiece].piece?.possibleMoves(this.chessboard, this.chessboard.tiles[tileWithPiece])
+      this.colorAvailableMoves(this.availableMoves)
       // uncomment next line to see the piece object, e.g. console.log(getSelectedPiece(0)) in setSelected()-method
-      //return this.chessboard.tiles[tileNumber].piece
+      //return this.chessboard.tiles[tileWithPiece].piece
     },
 
     // Color available moves
