@@ -1,14 +1,14 @@
 <template>
-  <div class="chessboard">
-    <table>
-        <tr v-for="i in 8" :key="i">
-          <td v-for="j in 8" :class="(i + j) % 2 === 0 ? 'white' : 'black'" :key="j" @click="possibleMoves(i, j)">
-            <span v-if="chessboard.tiles[8 * i + j - 9] && chessboard.tiles[8 * i + j - 9].piece">
-              <img :src="getPieceImage(chessboard.tiles[8 * i + j - 9].piece)">
-            </span>
-          </td>
-        </tr>
-    </table>
+  <div class="container">
+    <div class="chessboard">
+      <div class="row" v-for="i in 8" :key="i">
+        <div :tabindex="(8 * i + j - 9)" :class="(i + j) % 2 === 0 ? 'white tile' : 'black tile'" v-for="j in 8" :key="j" @click="setSelected(i, j)">
+          <img v-if="chessboard.tiles[8 * i + j - 9] && chessboard.tiles[8 * i + j - 9].piece" 
+                :src="getPieceImage(chessboard.tiles[8 * i + j - 9].piece)">
+        </div>
+      </div>
+      
+    </div>
   </div>
 </template>
 
@@ -17,68 +17,103 @@ import { Board } from '../../../Board'
 
 export default {
   data() {
+    //set selected
     const board = new Board()
     board.resetBoard()
     return {
-      chessboard: board
+      chessboard: board,
+      selected: null
     }
   },
   methods: {
-    possibleMoves(i, j) {
-        // Highlight current tile
-        const tile = document.querySelector(`td:nth-child(${j})`)
-        if(j % 2 === 0){
-           tile.classList.add('blackSelected')
-        } else {
-           tile.classList.add('whiteSelected')
-        }
-
-        const moves = this.chessboard.tiles[8 * i + j - 9].piece?.possibleMoves(this.chessboard, this.chessboard.tiles[8 * i + j - 9])
-        this.highlightMoves(moves)
-        const selectedTile = document.querySelector('.selected')
-        if (selectedTile) {
-          selectedTile.classList.remove('selected')
-        }
-        return moves || []
-    },
-    highlightMoves(moves) {
-      moves.forEach(move => {
-        const tile = document.querySelector(`td:nth-child(${move % 8 + 1})`)
-        tile.classList.add('highlight')
-      })
-    },
     getPieceImage(piece) {
       return require('../assets/' + piece?.constructor.name + '_' + (piece?.white ? 'white' : 'black') + '.png')
+    },
+
+    // Set selected piece
+    setSelected(i, j) {
+      // reset available colors
+      document.querySelectorAll('.available').forEach(element => {
+        element.classList.remove('available')
+      })
+      // reset select colors
+      document.querySelectorAll('.selected').forEach(element => {
+        element.classList.remove('selected')
+      })
+      // if already selected, deselect and return
+      if (this.selected !== null && (this.selected === 8 * i + j - 9 || this.chessboard.tiles[8 * i + j - 9].piece === null)) {
+        this.selected = null
+        console.log(this.selected)
+        return
+      }
+      // select the tile
+      if (this.chessboard.tiles[8 * i + j - 9].piece) {
+        this.selected = 8 * i + j - 9
+        document.querySelector([`[tabindex="${this.selected}"]`]).classList.add("selected")
+        this.getSelectedPiece(this.selected)
+      }
+    },
+
+    // Get selected piece
+    getSelectedPiece(tileNumber) {
+      this.colorAvailableMoves(this.chessboard.tiles[tileNumber].piece?.possibleMoves(this.chessboard, this.chessboard.tiles[tileNumber]))
+      // uncomment next line to see the piece object, e.g. console.log(getSelectedPiece(0)) in setSelected()-method
+      //return this.chessboard.tiles[tileNumber].piece
+    },
+
+    // Color available moves
+    colorAvailableMoves(moves) {
+      moves.forEach(move => {
+        let element = document.querySelector([`[tabindex="${move}"]`])
+        element.classList.add("available")
+      })
     }
   }
 }
 </script>
 
 <style scoped>
-td {
-  width: 50px;
-  height: 50px;
-  text-align: center;
-  border: none;
-  vertical-align: middle;
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgb(56, 56, 56);
+  color: white;
+  margin: 0;
+  padding: 0;
 }
-td.white {
+
+.row {
+  display: flex;
+}
+
+.tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+}
+
+.tile:hover {
+  cursor: pointer;
+}
+
+.white {
   background-color: #eeeed2;
 }
-td.black {
+
+.black {
   background-color: #769656;
 }
-td.whiteSelected {
-  background-color: #f7f76a;
+
+.available {
+  background-color: rgb(84, 255, 32);
 }
-td.blackSelected {
-  background-color: #bacb2b;
-}
-.highlightMoveBlack {
-  background-color: #6a874d;
-}
-.highlightMoveWhite {
-  background-color: #d6d6bd
-;
+
+.selected, .selected:hover {
+  background-color: rgb(255, 0, 0);
 }
 </style>
