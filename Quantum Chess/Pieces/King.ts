@@ -16,7 +16,7 @@ export class King extends Piece {
         // Filter out invalid positions
         return possibleMoves.filter(i => {
             const targetPos = start.pos + i
-            return (targetPos >= 0 && targetPos < 64) && (targetPos % 8 !== 7 && targetPos % 8 !== 0) 
+            return (targetPos >= 0 && targetPos < 64) && (start.pos % 8 < 7 && start.pos % 8 > 0 || start.pos % 8 === 7 && targetPos % 8 !== 0 || start.pos % 8 === 0 && targetPos % 8 !== 7) 
             && (!board.tiles[targetPos].piece || (board.tiles[targetPos].piece && board.tiles[targetPos].piece?.white !== this.white))
         }).map(i => start.pos + i)
     }
