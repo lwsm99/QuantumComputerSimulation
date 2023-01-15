@@ -2,7 +2,7 @@
   <div class="container">
     <div class="chessboard">
       <div class="row" v-for="i in 8" :key="i">
-        <div :tabindex="(8 * i + j - 9)" :class="(i + j) % 2 === 0 ? 'white tile' : 'black tile'" v-for="j in 8" :key="j" @click="setSelected(i, j)">
+        <div :tabindex="(8 * i + j - 9)" :class="(i + j) % 2 === 0 ? 'white tile' : 'black tile'" v-for="j in 8" :key="j" @click="selectTile(8 * i + j - 9)">
           <img v-if="chessboard.tiles[8 * i + j - 9] && chessboard.tiles[8 * i + j - 9].piece" 
                 :src="getPieceImage(chessboard.tiles[8 * i + j - 9].piece)">
         </div>
@@ -30,29 +30,24 @@ export default {
       return require('../assets/' + piece?.constructor.name + '_' + (piece?.white ? 'white' : 'black') + '.png')
     },
 
-    // Set selected piece
-    setSelected(i, j) {
-      // reset available colors
+    // Select a tile & move a piece
+    selectTile(pos) {
+      // Reset available colors
       document.querySelectorAll('.available').forEach(element => {
         element.classList.remove('available')
       })
-      // reset select colors
+      // Reset selected colors
       document.querySelectorAll('.selected').forEach(element => {
         element.classList.remove('selected')
       })
 
-      // selected
+      // A piece is already selected
       if (this.selected) {
-        // selected and i want to deselect
-        if (!this.availableMoves.includes(8 * i + j - 9)) {
-          // select another piece ?
-          if (this.chessboard.tiles[8 * i + j - 9].piece) {
-            if (this.selected === 8 * i + j - 9) {
-              this.selected = null
-              this.availableMoves = null
-              return
-            }
-            this.selected = 8 * i + j - 9
+        // Deselect a piece
+        if (!this.availableMoves.includes(pos)) {
+          // Select another piece
+          if (this.chessboard.tiles[pos].piece && this.selected !== pos) {
+            this.selected = pos
             document.querySelector([`[tabindex="${this.selected}"]`]).classList.add("selected")
             this.getSelectedPiece(this.selected)
             return
@@ -62,17 +57,16 @@ export default {
           return
         }
 
-        // selected and i want to move
-        this.chessboard.tiles[this.selected].piece.move(this.chessboard.tiles[this.selected], this.chessboard.tiles[8 * i + j - 9])
+        // Move selected piece
+        this.chessboard.tiles[this.selected].piece.move(this.chessboard.tiles[this.selected], this.chessboard.tiles[pos])
         this.selected = null
         this.availableMoves = null
         return
       }
       
-      // not selected
-      // i want to select
-      if (this.chessboard.tiles[8 * i + j - 9].piece) {
-        this.selected = 8 * i + j - 9
+      // No piece is selected and i want to select a piece
+      if (this.chessboard.tiles[pos].piece) {
+        this.selected = pos
         document.querySelector([`[tabindex="${this.selected}"]`]).classList.add("selected")
         this.getSelectedPiece(this.selected)
       }
@@ -82,8 +76,6 @@ export default {
     getSelectedPiece(tileWithPiece) {
       this.availableMoves = this.chessboard.tiles[tileWithPiece].piece?.possibleMoves(this.chessboard, this.chessboard.tiles[tileWithPiece])
       this.colorAvailableMoves(this.availableMoves)
-      // uncomment next line to see the piece object, e.g. console.log(getSelectedPiece(0)) in setSelected()-method
-      //return this.chessboard.tiles[tileWithPiece].piece
     },
 
     // Color available moves
