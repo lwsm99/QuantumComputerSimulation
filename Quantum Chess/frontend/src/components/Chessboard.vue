@@ -17,7 +17,6 @@ import { Board } from '../../../Board'
 
 export default {
   data() {
-    //set selected
     const board = new Board()
     board.resetBoard()
     return {
@@ -33,14 +32,6 @@ export default {
 
     // Set selected piece
     setSelected(i, j) {
-      // if piece selected and tile is selected, move piece
-      if (this.selected !== null && this.availableMoves !== null) {
-        console.log(this.chessboard.tiles[this.selected].piece)
-        console.log(this.availableMoves)
-        this.chessboard.tiles[this.selected].piece.move(this.chessboard.tiles[this.selected], this.chessboard.tiles[8 * i + j - 9])
-        this.selected = null
-        this.availableMoves = null
-      }
       // reset available colors
       document.querySelectorAll('.available').forEach(element => {
         element.classList.remove('available')
@@ -49,15 +40,37 @@ export default {
       document.querySelectorAll('.selected').forEach(element => {
         element.classList.remove('selected')
       })
-      // reset available moves
-      this.availableMoves = null
-      // if already selected, deselect and return
-      if (this.selected !== null && (this.selected === 8 * i + j - 9 || this.chessboard.tiles[8 * i + j - 9].piece === null)) {
+
+      // selected
+      if (this.selected) {
+        // selected and i want to deselect
+        if (!this.availableMoves.includes(8 * i + j - 9)) {
+          // select another piece ?
+          if (this.chessboard.tiles[8 * i + j - 9].piece) {
+            if (this.selected === 8 * i + j - 9) {
+              this.selected = null
+              this.availableMoves = null
+              return
+            }
+            this.selected = 8 * i + j - 9
+            document.querySelector([`[tabindex="${this.selected}"]`]).classList.add("selected")
+            this.getSelectedPiece(this.selected)
+            return
+          }
+          this.selected = null
+          this.availableMoves = null
+          return
+        }
+
+        // selected and i want to move
+        this.chessboard.tiles[this.selected].piece.move(this.chessboard.tiles[this.selected], this.chessboard.tiles[8 * i + j - 9])
         this.selected = null
-        console.log(this.selected)
+        this.availableMoves = null
         return
       }
-      // select the tile
+      
+      // not selected
+      // i want to select
       if (this.chessboard.tiles[8 * i + j - 9].piece) {
         this.selected = 8 * i + j - 9
         document.querySelector([`[tabindex="${this.selected}"]`]).classList.add("selected")
