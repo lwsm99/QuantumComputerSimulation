@@ -3,8 +3,8 @@
     <div class="chessboard">
       <div class="row" v-for="i in 8" :key="i">
         <div :tabindex="(8 * i + j - 9)" :class="(i + j) % 2 === 0 ? 'white tile' : 'black tile'" v-for="j in 8" :key="j" @click="selectTile(8 * i + j - 9)">
-          <img v-if="chessboard.tiles[8 * i + j - 9] && chessboard.tiles[8 * i + j - 9].piece" 
-                :src="getPieceImage(chessboard.tiles[8 * i + j - 9].piece)">
+          <img v-if="game.board.tiles[8 * i + j - 9] && game.board.tiles[8 * i + j - 9].piece" 
+                :src="getPieceImage(game.board.tiles[8 * i + j - 9].piece)">
         </div>
       </div>
       
@@ -13,14 +13,13 @@
 </template>
 
 <script>
-import { Board } from '../../../Board'
+import { Chess } from '../../../Chess'
 
 export default {
   data() {
-    const board = new Board()
-    board.resetBoard()
+    const game = new Chess()
     return {
-      chessboard: board,
+      game,
       selected: null,
       availableMoves: null,
     }
@@ -46,9 +45,15 @@ export default {
         // Deselect a piece
         if (!this.availableMoves.includes(pos)) {
           // Select another piece
-          if (this.chessboard.tiles[pos].piece && this.selected !== pos) {
+          if (this.game.board.tiles[pos].piece && this.selected !== pos) {
             this.selected = pos
             document.querySelector([`[tabindex="${this.selected}"]`]).classList.add("selected")
+
+            if (this.game.whiteTurn !== this.game.board.tiles[pos].piece.white) {
+              this.selected = null
+              return
+            }
+
             this.getSelectedPiece(this.selected)
             return
           }
@@ -58,23 +63,34 @@ export default {
         }
 
         // Move selected piece
-        this.chessboard.tiles[this.selected].piece.move(this.chessboard.tiles[this.selected], this.chessboard.tiles[pos])
+        this.game.move(this.selected, pos)
         this.selected = null
         this.availableMoves = null
+
+        // Check if game is over
+        if (this.game.gameOver) {
+          const winner = this.game.whiteTurn ? 'Black' : 'White'
+          alert("Game Over! " + winner + " won!")
+          this.game.resetGame()
+        }
         return
       }
       
       // No piece is selected and i want to select a piece
-      if (this.chessboard.tiles[pos].piece) {
+      if (this.game.board.tiles[pos].piece) {
         this.selected = pos
         document.querySelector([`[tabindex="${this.selected}"]`]).classList.add("selected")
+        if (this.game.whiteTurn !== this.game.board.tiles[pos].piece.white) {
+          this.selected = null
+          return
+        }
         this.getSelectedPiece(this.selected)
       }
     },
 
     // Get selected piece
     getSelectedPiece(tileWithPiece) {
-      this.availableMoves = this.chessboard.tiles[tileWithPiece].piece?.possibleMoves(this.chessboard, this.chessboard.tiles[tileWithPiece])
+      this.availableMoves = this.game.getMoves(tileWithPiece)
       this.colorAvailableMoves(this.availableMoves)
     },
 
