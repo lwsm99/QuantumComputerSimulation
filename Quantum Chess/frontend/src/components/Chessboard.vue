@@ -42,7 +42,7 @@ export default {
       })
 
       // A piece is already selected
-      if (this.selected) {
+      if (this.selected !== null) {
         // Deselect a piece
         if (!this.availableMoves.includes(pos)) {
           // Select another piece
