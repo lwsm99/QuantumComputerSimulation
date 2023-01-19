@@ -1,32 +1,44 @@
 import { Board } from "../Board"
-import { Spot } from "../Spot"
 
 export abstract class Piece {
   public white: boolean
+  public pos: number
+  public probability: number = 1
+  public entangledPiece: Piece | null = null
 
-  constructor(white: boolean) {
+  constructor(white: boolean, pos: number) {
     this.white = white
+    this.pos = pos
   }
 
-  public abstract possibleMoves(board: Board, start: Spot): number[]
+  public abstract possibleMoves(board: Board): number[]
 
-  public move(source: Spot, target: Spot) {
-    const piece = source.piece
-    source.piece = null
-    target.piece = piece
+  public move(board: Board, target: number) {
+    board.tiles[this.pos] = null
+    board.tiles[target] = this
+    this.pos = target
   }
 
-  public splitMove(source: Spot, target: Spot, target2: Spot) {
-    const piece = source.piece
-    source.piece = null
-    target.piece = piece
-    target2.piece = piece
+  public splitMove(board: Board, target: number, target2: number) {
+    board.tiles[this.pos] = null
+
+    board.tiles[target] = structuredClone(this)
+    board.tiles[target]!.pos = target
+    board.tiles[target]!.probability = 0.5
+
+    board.tiles[target2] = structuredClone(this)
+    board.tiles[target2]!.pos = target2
+    board.tiles[target2]!.probability = 0.5
+
+    board.tiles[target]!.entangledPiece = board.tiles[target2]
+    board.tiles[target2]!.entangledPiece = board.tiles[target]
   }
 
-  public mergeMove(source: Spot, source2: Spot, target: Spot) {
-    const piece = source.piece
-    source.piece = null
-    source2.piece = null
-    target.piece = piece
+  public mergeMove(source: number, source2: number, target: number) {
+    
+  }
+
+  public measure(board: Board, target: number) {
+    Math.random() < 0.5 ? this.move(board, target) : this.move(board, target)
   }
 }

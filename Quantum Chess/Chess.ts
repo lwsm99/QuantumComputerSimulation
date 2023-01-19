@@ -17,7 +17,7 @@ export class Chess {
     }
 
     public getMoves(source: number): number[] {
-        return this.board.tiles[source].piece?.possibleMoves(this.board, this.board.tiles[source]) || []
+        return this.board.tiles[source]!.possibleMoves(this.board) || []
     }
 
     public move(source: number, target: number) {
@@ -27,16 +27,17 @@ export class Chess {
         }
 
         // Check if it is the right player's turn
-        if (this.whiteTurn !== this.board.tiles[source].piece?.white) {
+        if (this.whiteTurn !== this.board.tiles[source]?.white) {
             return
         }
 
         // Check if the game is over
-        if (this.board.tiles[target].piece?.constructor.name === "King") {
+        if (this.board.tiles[target]?.constructor.name === "King") {
             this.gameOver = true
         }
 
-        this.board.tiles[source].piece?.move(this.board.tiles[source], this.board.tiles[target])
+        console.log(this.board.tiles[source]?.constructor.name + ' moved from ' + source + ' to ' + target)
+        this.board.tiles[source]?.move(this.board, target)
         this.whiteTurn = !this.whiteTurn
     }
 
@@ -52,8 +53,11 @@ export class Chess {
         console.log('White right Rook Movement: ' + this.getMoves(63))
         console.log('Black Pawn Movement: ' + this.getMoves(48))
 
-        this.move(48, 40)
+        this.move(52, 36)
         console.log(this.board.toString())
         console.log('White King Movement: ' + this.getMoves(60))
     }
 }
+
+const game = new Chess()
+game.testGame()
