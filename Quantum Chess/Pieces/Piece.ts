@@ -22,12 +22,10 @@ export abstract class Piece {
   public splitMove(board: Board, target: number, target2: number) {
     board.tiles[this.pos] = null
 
-    board.tiles[target] = structuredClone(this)
-    board.tiles[target]!.pos = target
+    board.tiles[target] = this.constructor(this.white, target)
     board.tiles[target]!.probability = 0.5
 
-    board.tiles[target2] = structuredClone(this)
-    board.tiles[target2]!.pos = target2
+    board.tiles[target2] = this.constructor(this.white, target2)
     board.tiles[target2]!.probability = 0.5
 
     board.tiles[target]!.entangledPiece = board.tiles[target2]

@@ -4,8 +4,6 @@
       <div class="chessboard">
         <div class="row" v-for="i in 8" :key="i">
           <div :tabindex="(8 * i + j - 9)" :class="(i + j) % 2 === 0 ? 'white tile' : 'black tile'" v-for="j in 8" :key="j" @click="selectTile(8 * i + j - 9)">
-            <img v-if="game.board.tiles[8 * i + j - 9]" 
-                  :src="getPieceImage(game.board.tiles[8 * i + j - 9])">
             <div :tabindex="(8 * i + j - 9) + 64"></div>
           </div>
         </div>
@@ -133,9 +131,6 @@ export default {
     getSelectedPiece(tileWithPiece) {
       this.availableMoves = this.game.getMoves(tileWithPiece)
       this.colorAvailableMoves(this.availableMoves)
-      document.querySelectorAll('.takeable').forEach(element => {
-        console.log(element)
-      })
     },
 
     // Color available moves
@@ -177,7 +172,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 50px 50px 10px 2px rgba(0,0,0,0.75);
+  box-shadow: 20px 20px 10px 2px rgba(0,0,0,0.75);
 }
 
 .button-container {
@@ -267,14 +262,15 @@ export default {
   font-size: 18px;
   margin-top: 30px;
   width: 200px;
+  box-shadow: 10px 10px 10px 2px rgba(0,0,0,0.75);
 }
 
 .button-29:focus {
-  box-shadow: #3c4fe0 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+  box-shadow: 10px 10px 10px 2px rgba(0,0,0,0.75);
 }
 
 .button-29:hover {
-  box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+  box-shadow: 10px 10px 10px 2px rgba(0,0,0,0.75);
   transform: translateY(-2px);
 }
 

@@ -36,8 +36,27 @@ export class Chess {
             this.gameOver = true
         }
 
-        console.log(this.board.tiles[source]?.constructor.name + ' moved from ' + source + ' to ' + target)
         this.board.tiles[source]?.move(this.board, target)
+        this.whiteTurn = !this.whiteTurn
+    }
+
+    public splitMove(source: number, target: number, target2: number) {
+        // Check if move is possible
+        if (!this.getMoves(source).includes(target) || !this.getMoves(source).includes(target2)) {
+            return
+        }
+
+        // Check if it is the right player's turn
+        if (this.whiteTurn !== this.board.tiles[source]?.white) {
+            return
+        }
+
+        // Check if the game is over
+        if (this.board.tiles[target]?.constructor.name === "King") {
+            this.gameOver = true
+        }
+
+        this.board.tiles[source]?.splitMove(this.board, target, target2)
         this.whiteTurn = !this.whiteTurn
     }
 
@@ -53,11 +72,11 @@ export class Chess {
         console.log('White right Rook Movement: ' + this.getMoves(63))
         console.log('Black Pawn Movement: ' + this.getMoves(48))
 
-        this.move(52, 36)
+        this.splitMove(51, 43, 35)
         console.log(this.board.toString())
-        console.log('White King Movement: ' + this.getMoves(60))
     }
 }
 
-const game = new Chess()
-game.testGame()
+// Test Game
+// const chess = new Chess()
+// chess.testGame() 

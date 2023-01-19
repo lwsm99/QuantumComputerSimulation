@@ -1,5 +1,4 @@
 import { Piece } from "./Piece"
-import { Spot } from "../Spot"
 import { Board } from "../Board"
 
 export class King extends Piece {
