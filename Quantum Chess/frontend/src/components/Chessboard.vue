@@ -4,6 +4,7 @@
       <div class="chessboard">
         <div class="row" v-for="i in 8" :key="i">
           <div :tabindex="(8 * i + j - 9)" :class="(i + j) % 2 === 0 ? 'white tile' : 'black tile'" v-for="j in 8" :key="j" @click="selectTile(8 * i + j - 9)">
+            <img v-if="game.board.tiles[8 * i + j - 9]" :src="getPieceImage(game.board.tiles[8 * i + j - 9])">
             <div :tabindex="(8 * i + j - 9) + 64"></div>
           </div>
         </div>
