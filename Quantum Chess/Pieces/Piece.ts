@@ -22,10 +22,12 @@ export abstract class Piece {
   public splitMove(board: Board, target: number, target2: number) {
     board.tiles[this.pos] = null
 
-    board.tiles[target] = this.constructor(this.white, target)
+    board.tiles[target] = Object.create(Object.getPrototypeOf(this), Object.getOwnPropertyDescriptors(this))
+    board.tiles[target]!.pos = target
     board.tiles[target]!.probability = 0.5
 
-    board.tiles[target2] = this.constructor(this.white, target2)
+    board.tiles[target2] = Object.create(Object.getPrototypeOf(this), Object.getOwnPropertyDescriptors(this))
+    board.tiles[target2]!.pos = target2
     board.tiles[target2]!.probability = 0.5
 
     board.tiles[target]!.entangledPiece = board.tiles[target2]
@@ -36,7 +38,22 @@ export abstract class Piece {
     
   }
 
-  public measure(board: Board, target: number) {
-    Math.random() < 0.5 ? this.move(board, target) : this.move(board, target)
+  // Perform measurement on a split piece
+  public measure(board: Board) {
+    if (Math.random() < 0.5) {
+      // Remove entangled piece
+      console.log("Remove entangled piece")
+      console.log(this)
+      console.log(this.entangledPiece)
+      board.tiles[this.entangledPiece!.pos] = null
+      this.probability = 1
+      this.entangledPiece = null
+    } else {
+      // Merge current piece back into entangled piece
+      const entangledPiece = this.entangledPiece!
+      board.tiles[this.pos] = null
+      entangledPiece.probability = 1
+      entangledPiece.entangledPiece = null
+    }
   }
 }
