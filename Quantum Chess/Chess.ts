@@ -97,5 +97,5 @@ export class Chess {
 }
 
 // Test Game
-const chess = new Chess()
-chess.testGame() 
+// const chess = new Chess()
+// chess.testGame() 
