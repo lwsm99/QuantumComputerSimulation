@@ -4,8 +4,12 @@
       <div class="chessboard">
         <div class="row" v-for="i in 8" :key="i">
           <div :tabindex="(8 * i + j - 9)" :class="(i + j) % 2 === 0 ? 'white tile' : 'black tile'" v-for="j in 8" :key="j" @click="selectTile(8 * i + j - 9)">
-            <img v-if="game.board.tiles[8 * i + j - 9]" :src="getPieceImage(game.board.tiles[8 * i + j - 9])">
-            <div :tabindex="(8 * i + j - 9) + 64"></div>
+            <div>
+              <img v-if="game.board.tiles[8 * i + j - 9]" :src="getPieceImage(game.board.tiles[8 * i + j - 9])">
+              <span v-if="game.board.tiles[8 * i + j - 9]">{{ game.board.tiles[8 * i + j - 9].probability }}</span>
+              <!-- <v-progress-linear color="black" height="5" value="50"></v-progress-linear> -->
+              <div :tabindex="(8 * i + j - 9) + 64"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -165,8 +169,8 @@ export default {
 }
 
 .chess-container{
-  width: 550px;
-  height: 550px;
+  width: 600px;
+  height: 600px;
   background: rgb(9,9,121);
   background: linear-gradient(16deg, rgba(0,212,255,1) 0%, rgba(9,9,121,1) 100%);
   border-radius: 10px;
@@ -190,8 +194,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 65px;
-  height: 65px;
+  width: 70px;
+  height: 70px;
 }
 
 .tile:hover {

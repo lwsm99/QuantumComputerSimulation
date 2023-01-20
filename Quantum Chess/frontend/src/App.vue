@@ -3,10 +3,12 @@
 </template>
 
 <script>
+import vuetify from '@/plugins/vuetify'
 import ChessBoard from './components/ChessBoard.vue'
 
 export default {
   name: 'App',
+  vuetify,
   components: {
     ChessBoard
   }
@@ -14,6 +16,7 @@ export default {
 </script>
 
 <style>
+@import 'https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css';
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 * {
   font-family: 'Montserrat', sans-serif;
