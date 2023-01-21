@@ -5,9 +5,8 @@
         <div class="row" v-for="i in 8" :key="i">
           <div :tabindex="(8 * i + j - 9)" :class="(i + j) % 2 === 0 ? 'white tile' : 'black tile'" v-for="j in 8" :key="j" @click="selectTile(8 * i + j - 9)">
             <div>
-              <!-- <span v-if="game.board.tiles[8 * i + j - 9]">{{ game.board.tiles[8 * i + j - 9].probability }}</span> -->
-              <!-- <v-progress-linear color="black" height="5" value="50"></v-progress-linear> -->
               <img v-if="game.board.tiles[8 * i + j - 9]" :src="getPieceImage(game.board.tiles[8 * i + j - 9])">
+              <div v-if="game.board.tiles[8 * i + j - 9]" class="w3-light-grey"><div class="w3-purple" :style="{ height: '5px', width: game.board.tiles[8 * i + j - 9].probability * 100 + '%' }"></div></div>
               <div :tabindex="(8 * i + j - 9) + 64"></div>
             </div>
           </div>
@@ -59,6 +58,7 @@ export default {
         } else {
           // Split move
           if (this.quantumRealm) {
+            // If there's no target selected yet, select a target
             if (this.selectedTarget === null && this.availableMoves.includes(pos)) {
               this.selectedTarget = pos
               this.colorAvailableMoves(this.availableMoves)
@@ -149,7 +149,12 @@ export default {
         if (this.game.whiteTurn) element.classList.add("circle-white")
         else element.classList.add("circle-black")
       })
-    }
+    },
+
+    // Get size of probality bar for a piece
+    getProbabilityBarSize(piece) {
+      return piece.probability * 100 + '%'
+    },
   }
 }
 </script>
