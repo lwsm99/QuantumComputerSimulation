@@ -29,7 +29,8 @@ export default {
     const game = new Chess()
     return {
       game,
-      selected: null,
+      selectedSource: null,
+      selectedTarget: null,
       availableMoves: null,
       quantumRealm: false,
     }
@@ -44,20 +45,34 @@ export default {
       document.querySelectorAll('.takeable').forEach(element => element.classList.remove('takeable'))
 
       // A piece is already selected
-      if (this.selected !== null) {
+      if (this.selectedSource !== null) {
         // Deselect a piece
-        if (!this.availableMoves.includes(pos) && this.game.board.tiles[pos] && this.selected !== pos) {
-          this.selected = null
+        if (!this.availableMoves.includes(pos)) {
+          this.selectedSource = null
           this.availableMoves = null
+          this.selectedTarget = null
           
           // Select another piece
-          if (this.game.board.tiles[pos] && this.selected !== pos) {
+          if (this.game.board.tiles[pos] && this.selectedSource !== pos) {
             this.selectPiece(pos)
           }
         } else {
-          // Move selected piece
-          this.game.move(this.selected, pos)
-          this.selected = null
+          // Split move
+          if (this.quantumRealm) {
+            if (this.selectedTarget === null && this.availableMoves.includes(pos)) {
+              this.selectedTarget = pos
+              this.colorAvailableMoves(this.availableMoves)
+              return
+            } else {
+              this.game.move(this.selectedSource, this.selectedTarget, pos)
+              this.selectedTarget = null
+              this.recolorBackground()
+            }
+          } else {
+            // Basic move
+            this.game.move(this.selectedSource, pos)
+          }
+          this.selectedSource = null
           this.availableMoves = null
 
           // Check if game is over
@@ -67,7 +82,6 @@ export default {
             this.game.resetGame()
           }
         }
-        return
       } else if (this.game.board.tiles[pos]) {
         // No piece is selected and i want to select a piece
         this.selectPiece(pos)
@@ -76,13 +90,17 @@ export default {
 
     // Select a piece
     selectPiece(pos) {
-      this.selected = pos
-      document.querySelector([`[tabindex="${this.selected}"]`]).classList.add("selected")
+      this.selectedSource = pos
+      document.querySelector([`[tabindex="${this.selectedSource}"]`]).classList.add("selected")
       if (this.game.whiteTurn !== this.game.board.tiles[pos].white) {
-        this.selected = null
+        this.selectedSource = null
         return
       }
-      this.availableMoves = this.game.getMoves(this.selected)
+      this.availableMoves = this.game.getMoves(this.selectedSource)
+      if (this.quantumRealm) {
+        // If it's a split move and target tile has a piece, filter them out
+        this.availableMoves = this.availableMoves.filter(move => !this.game.board.tiles[move])
+      }
       this.colorAvailableMoves(this.availableMoves)
     },
 

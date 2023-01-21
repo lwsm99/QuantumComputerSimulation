@@ -40,20 +40,16 @@ export abstract class Piece {
 
   // Perform measurement on a split piece
   public measure(board: Board) {
-    if (Math.random() < 0.5) {
-      // Remove entangled piece
-      console.log("Remove entangled piece")
-      console.log(this)
-      console.log(this.entangledPiece)
-      board.tiles[this.entangledPiece!.pos] = null
+    if (Math.random() < 0.5) { // REMOVE ENTANGLED PIECE
+      // Only remove entangled piece if it's still on the board
+      if (board.tiles[this.entangledPiece!.pos] === this.entangledPiece) board.tiles[this.entangledPiece!.pos] = null
+
       this.probability = 1
       this.entangledPiece = null
-    } else {
-      // Merge current piece back into entangled piece
-      const entangledPiece = this.entangledPiece!
+    } else { // MERGE CURRENT PIECE INTO ENTANGLED PIECE
       board.tiles[this.pos] = null
-      entangledPiece.probability = 1
-      entangledPiece.entangledPiece = null
+      this.entangledPiece!.probability = 1
+      this.entangledPiece!.entangledPiece = null
     }
   }
 }

@@ -1,4 +1,5 @@
 import { Board } from "./Board"
+import { King } from "./Pieces/King"
 
 export class Chess {
     public board: Board
@@ -24,51 +25,43 @@ export class Chess {
     // Moves a piece to a position, if target2 is defined, it will perform a split move
     public move(source: number, target: number, target2?: number) {
         // Check if it is the right player's turn
-        if (this.whiteTurn !== this.board.tiles[source]?.white) {
-            return
-        }
+        if (this.whiteTurn !== this.board.tiles[source]?.white) return
 
         // Check if move is possible
-        if (!this.getMoves(source).includes(target) || (target2 && !this.getMoves(source).includes(target2))) {
-            return
-        }
+        if (!this.getMoves(source).includes(target) || (target2 && !this.getMoves(source).includes(target2))) return
 
         if (target2) {
             // SPLIT MOVE
             // A split move is a move where a piece splits into two pieces, split moves can't capture
 
             // Check if there's a piece on target or target2
-            if (this.board.tiles[target] || this.board.tiles[target2]) {
-                return
-            }
+            if (this.board.tiles[target] || this.board.tiles[target2]) return
 
             // Check if the piece is already split
-            if (this.board.tiles[source]?.probability === 0.5) {
-                return
-            }
+            if (this.board.tiles[source]?.probability === 0.5) return
 
             this.board.tiles[source]?.splitMove(this.board, target, target2)
         } else {
             // BASIC MOVE
             // Basic chess move
 
-            // Check if the game is over
-            if (this.board.tiles[target]?.constructor.name === "King") {
-                this.gameOver = true
-            }
-
-            // Measure current piece if it's a split piece
-            if (this.board.tiles[source]?.probability === 0.5) {
+            // If split piece is trying to take a piece -> Measure
+            if (this.board.tiles[target] && this.board.tiles[source]?.probability === 0.5) {
                 this.board.tiles[source]?.measure(this.board)
             }
 
-            // Measure target piece if it's a split piece
-            if (this.board.tiles[target]?.probability === 0.5) {
-                console.log('Measure')
+            // If split piece is trying to take a split piece or a king -> Measure
+            if (this.board.tiles[target]?.probability === 0.5 && (this.board.tiles[source]?.probability === 0.5 || this.board.tiles[target] instanceof King)) {
                 this.board.tiles[target]?.measure(this.board)
             }
 
-            this.board.tiles[source]?.move(this.board, target)
+            // Check if move is possible
+            if (this.getMoves(source).includes(target)) {
+                this.board.tiles[source]?.move(this.board, target)
+            }
+
+            // Check if the game is over, only one king or 2 split kings left on the board
+            this.gameOver = (this.board.tiles.filter(tile => tile instanceof King).length === 1 || this.board.tiles.filter(tile => tile instanceof King && tile?.probability === 0.5).length === 2)
         }
         this.whiteTurn = !this.whiteTurn
     }
