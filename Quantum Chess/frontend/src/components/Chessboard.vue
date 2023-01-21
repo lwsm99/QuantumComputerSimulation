@@ -5,9 +5,9 @@
         <div class="row" v-for="i in 8" :key="i">
           <div :tabindex="(8 * i + j - 9)" :class="(i + j) % 2 === 0 ? 'white tile' : 'black tile'" v-for="j in 8" :key="j" @click="selectTile(8 * i + j - 9)">
             <div>
-              <img v-if="game.board.tiles[8 * i + j - 9]" :src="getPieceImage(game.board.tiles[8 * i + j - 9])">
-              <span v-if="game.board.tiles[8 * i + j - 9]">{{ game.board.tiles[8 * i + j - 9].probability }}</span>
+              <!-- <span v-if="game.board.tiles[8 * i + j - 9]">{{ game.board.tiles[8 * i + j - 9].probability }}</span> -->
               <!-- <v-progress-linear color="black" height="5" value="50"></v-progress-linear> -->
+              <img v-if="game.board.tiles[8 * i + j - 9]" :src="getPieceImage(game.board.tiles[8 * i + j - 9])">
               <div :tabindex="(8 * i + j - 9) + 64"></div>
             </div>
           </div>
@@ -92,6 +92,7 @@ export default {
     selectPiece(pos) {
       this.selectedSource = pos
       document.querySelector([`[tabindex="${this.selectedSource}"]`]).classList.add("selected")
+      
       if (this.game.whiteTurn !== this.game.board.tiles[pos].white) {
         this.selectedSource = null
         return
@@ -108,26 +109,25 @@ export default {
     recolorBackground() {
       let main = document.getElementById("main-changer")
       let chess = document.getElementById("chess-changer")
-      let whiteTiles = document.getElementsByClassName("white")
-      let blackTiles = document.getElementsByClassName("black")
+
       if (this.quantumRealm) {
+        // Recolor to standard chess
         main.style.background = 'linear-gradient(16deg, rgba(9,9,121,1) 0%, rgba(0,212,255,1) 100%)'
         chess.style.background = 'linear-gradient(16deg, rgba(0,212,255,1) 0%, rgba(9,9,121,1) 100%)'
-        for (let i = 0; i < whiteTiles.length; i++) {
-          whiteTiles[i].style.background = '#3dadff'
-        }
-        for (let i = 0; i < blackTiles.length; i++) {
-          blackTiles[i].style.background = '#386fe8'
-        }
+
+        document.querySelectorAll(".whiteQuantum").forEach(element => element.classList.replace("whiteQuantum", "white"))
+        document.querySelectorAll(".blackQuantum").forEach(element => element.classList.replace("blackQuantum", "black"))
+        document.querySelectorAll(".button-29").forEach(element => element.style['background-image'] = 'radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%)')
+        document.querySelectorAll('.takeable').forEach(element => element.classList.remove('takeable'))
       } else {
+        // Recolor to quantum chess
         main.style.background = 'linear-gradient(16deg, rgba(255,190,99,1) 30%, rgba(253,29,29,1) 100%)'
         chess.style.background = 'linear-gradient(16deg, rgba(253,29,29,1) 30%, rgba(255,190,99,1) 100%)'
-        for (let i = 0; i < whiteTiles.length; i++) {
-          whiteTiles[i].style.background = '#FFBC57'
-        }
-        for (let i = 0; i < blackTiles.length; i++) {
-          blackTiles[i].style.background = '#B36D07'
-        }
+
+        document.querySelectorAll(".white").forEach(element => element.classList.replace("white", "whiteQuantum"))
+        document.querySelectorAll(".black").forEach(element => element.classList.replace("black", "blackQuantum"))
+        document.querySelectorAll(".button-29").forEach(element => element.style['background-image'] = 'radial-gradient(100% 100% at 100% 0, #ffba61 0, #fd4d32 100%)')
+        document.querySelectorAll('.takeable').forEach(element => element.classList.remove('takeable'))
       }
       this.quantumRealm = !this.quantumRealm
     },
@@ -219,20 +219,28 @@ export default {
     border-radius: 50px;
 }
 
-.takeable {
-  background-color: #FFB13D !important;
-}
-
 .white {
   background-color: #3dadff;
+}
+
+.whiteQuantum {
+  background-color: #FFBC57;
 }
 
 .black {
   background-color: #386fe8;
 }
 
+.blackQuantum {
+  background-color: #B36D07;
+}
+
+.takeable {
+  background-color: #feba61 !important;
+}
+
 .selected, .selected:hover {
-  background-color: rgb(255, 0, 0);
+  background-color: #fd1d1d;
 }
 
 /* CSS */
@@ -244,7 +252,7 @@ export default {
   border-radius: 6px;
   box-shadow: rgba(45, 35, 66, .4) 0 2px 4px,rgba(45, 35, 66, .3) 0 7px 13px -3px,rgba(58, 65, 111, .5) 0 -3px 0 inset;
   box-sizing: border-box;
-  color: #fff;
+  color: white;
   cursor: pointer;
   display: inline-flex;
   height: 48px;

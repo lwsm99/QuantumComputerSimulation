@@ -40,6 +40,9 @@ export class Chess {
             // Check if the piece is already split
             if (this.board.tiles[source]?.probability === 0.5) return
 
+            // Check if both target positions are the same
+            if (target === target2) return
+
             this.board.tiles[source]?.splitMove(this.board, target, target2)
         } else {
             // BASIC MOVE
