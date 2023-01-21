@@ -35,6 +35,57 @@ export default {
     }
   },
   methods: {
+    // Select a tile & move a piece
+    selectTile(pos) {
+      // Reset colors
+      document.querySelectorAll('.circle-black').forEach(element => element.classList.remove('circle-black'))
+      document.querySelectorAll('.circle-white').forEach(element => element.classList.remove('circle-white'))
+      document.querySelectorAll('.selected').forEach(element => element.classList.remove('selected'))
+      document.querySelectorAll('.takeable').forEach(element => element.classList.remove('takeable'))
+
+      // A piece is already selected
+      if (this.selected !== null) {
+        // Deselect a piece
+        if (!this.availableMoves.includes(pos) && this.game.board.tiles[pos] && this.selected !== pos) {
+          this.selected = null
+          this.availableMoves = null
+          
+          // Select another piece
+          if (this.game.board.tiles[pos] && this.selected !== pos) {
+            this.selectPiece(pos)
+          }
+        } else {
+          // Move selected piece
+          this.game.move(this.selected, pos)
+          this.selected = null
+          this.availableMoves = null
+
+          // Check if game is over
+          if (this.game.gameOver) {
+            const winner = this.game.whiteTurn ? 'Black' : 'White'
+            alert("Game Over! " + winner + " won!")
+            this.game.resetGame()
+          }
+        }
+        return
+      } else if (this.game.board.tiles[pos]) {
+        // No piece is selected and i want to select a piece
+        this.selectPiece(pos)
+      }
+    },
+
+    // Select a piece
+    selectPiece(pos) {
+      this.selected = pos
+      document.querySelector([`[tabindex="${this.selected}"]`]).classList.add("selected")
+      if (this.game.whiteTurn !== this.game.board.tiles[pos].white) {
+        this.selected = null
+        return
+      }
+      this.availableMoves = this.game.getMoves(this.selected)
+      this.colorAvailableMoves(this.availableMoves)
+    },
+
     // Recolor the background
     recolorBackground() {
       let main = document.getElementById("main-changer")
@@ -62,80 +113,10 @@ export default {
       }
       this.quantumRealm = !this.quantumRealm
     },
+
+    // Get image of a piece
     getPieceImage(piece) {
       return require('../assets/' + piece?.constructor.name + '_' + (piece?.white ? 'white' : 'black') + '.png')
-    },
-
-    // Select a tile & move a piece
-    selectTile(pos) {
-      // Reset available colors
-      document.querySelectorAll('.circle-black').forEach(element => {
-        element.classList.remove('circle-black')
-      })
-      document.querySelectorAll('.circle-white').forEach(element => {
-        element.classList.remove('circle-white')
-      })
-      // Reset selected colors
-      document.querySelectorAll('.selected').forEach(element => {
-        element.classList.remove('selected')
-      })
-      // Reset takeable colors
-      document.querySelectorAll('.takeable').forEach(element => {
-        element.classList.remove('takeable')
-      })
-
-      // A piece is already selected
-      if (this.selected !== null) {
-        // Deselect a piece
-        if (!this.availableMoves.includes(pos)) {
-          // Select another piece
-          if (this.game.board.tiles[pos] && this.selected !== pos) {
-            this.selected = pos
-            document.querySelector([`[tabindex="${this.selected}"]`]).classList.add("selected")
-
-            if (this.game.whiteTurn !== this.game.board.tiles[pos].white) {
-              this.selected = null
-              return
-            }
-
-            this.getSelectedPiece(this.selected)
-            return
-          }
-          this.selected = null
-          this.availableMoves = null
-          return
-        }
-
-        // Move selected piece
-        this.game.move(this.selected, pos)
-        this.selected = null
-        this.availableMoves = null
-
-        // Check if game is over
-        if (this.game.gameOver) {
-          const winner = this.game.whiteTurn ? 'Black' : 'White'
-          alert("Game Over! " + winner + " won!")
-          this.game.resetGame()
-        }
-        return
-      }
-      
-      // No piece is selected and i want to select a piece
-      if (this.game.board.tiles[pos]) {
-        this.selected = pos
-        document.querySelector([`[tabindex="${this.selected}"]`]).classList.add("selected")
-        if (this.game.whiteTurn !== this.game.board.tiles[pos].white) {
-          this.selected = null
-          return
-        }
-        this.getSelectedPiece(this.selected)
-      }
-    },
-
-    // Get selected piece
-    getSelectedPiece(tileWithPiece) {
-      this.availableMoves = this.game.getMoves(tileWithPiece)
-      this.colorAvailableMoves(this.availableMoves)
     },
 
     // Color available moves
