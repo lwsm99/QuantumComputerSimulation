@@ -34,8 +34,15 @@ export abstract class Piece {
     board.tiles[target2]!.entangledPiece = board.tiles[target]
   }
 
-  public mergeMove(source: number, source2: number, target: number) {
+  public mergeMove(board: Board, source2: number, target: number) {
+    board.tiles[this.pos] = null
+    board.tiles[source2] = null
+
+    this.pos = target
+    this.probability = 1
+    this.entangledPiece = null
     
+    board.tiles[target] = this
   }
 
   // Perform measurement on a split piece

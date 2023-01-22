@@ -69,6 +69,31 @@ export class Chess {
         this.whiteTurn = !this.whiteTurn
     }
 
+    // Merge two split pieces
+    public merge(source: number, source2: number, target: number) {
+        // Check if it is the right player's turn
+        if (this.whiteTurn !== this.board.tiles[source]?.white) return
+
+        // Check if the pieces are split
+        if (this.board.tiles[source]?.probability !== 0.5 || this.board.tiles[source2]?.probability !== 0.5) return
+
+        // Check if the pieces are the same type
+        if (this.board.tiles[source]?.constructor.name !== this.board.tiles[source2]?.constructor.name) return
+
+        // Check if the pieces are the same color
+        if (this.board.tiles[source]?.white !== this.board.tiles[source2]?.white) return
+
+        // Check if the target position is empty
+        if (this.board.tiles[target]) return
+
+        // Check if the target position is the same as the source positions
+        if (target === source || target === source2) return
+
+        // Merge the pieces
+        this.board.tiles[source]?.mergeMove(this.board, source2, target)
+        this.whiteTurn = !this.whiteTurn
+    }
+
     public testGame() {
         console.log(this.board.toString())
         console.log('White left Rook Movement: ' + this.getMoves(56))
