@@ -10,6 +10,8 @@ Die Schrödinger-Gleichung ist eine fundamentale Gleichung der Quantenmechanik. 
 ## Quantensimulator
 Die Grundlagen wurden erarbeitet, nun geht es darum einen Quantensimulator zu bauen. Für einen Quantensimulator brauchen wir eine Library um mit Matrizen zu arbeiten, diese haben wir selbst gebaut mit dem selben Konzept wie bei komplexen Zahlen. Der Quantensimulator ist daraufhin relativ simpel aufzubauen. Mehr Infos in der [Quantum Simulator README](Quantum%20Simulator/README.md).
 
+## Quantum Chess
+Nach dem Quantensimulator war es an der Zeit, ein größeres Projekt auf der Grundlage der Quantenmechanik zu starten. Quantum Chess ist ein Weg, ohne die Mathemtik, ein intuitives Verständnis der Quantenwelt zu schaffen. Das [Quantum Chess README](/Quantum%20Chess/README.md) erklärt, wie ich dies angegangen bin und wie sich Quantum Chess vom normalen Schach unterscheidet.
 
 
 # Simulation of quantum computers and their fundamentals - Lucas Weißmann [EN]
@@ -23,3 +25,6 @@ The Schrödinger equation is a fundamental equation of quantum mechanics. It des
 
 ## Quantum simulator
 The basics have been worked out, now it is time to build a quantum simulator. For the quantum simulator we first need a library to work with matrices, so we built our own library using the same concept as for complex numbers. The quantum simulator is then relatively simple to build. More information in the [Quantum Simulator README](Quantum%20Simulator/README.md).
+
+## Quantum Chess
+After the quantum simulator, it was time to start a bigger project based on quantum mechanics. Quantum Chess is a way to create an intuitive understanding of the quantum world without the mathematics. The [Quantum Chess README](/Quantum%20Chess/README.md) explains how I approached this and how Quantum Chess differs from normal Chess.
