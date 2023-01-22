@@ -14,8 +14,8 @@
       </div>
     </div>
     <div class="button-container">
-      <button class="button-29" role="button" @click="recolorBackground()">Split Move</button>
-      <button class="button-29" role="button" @click="recolorBackground()">Merge Move</button>
+      <button class="button-29" role="button" @click="switchSplitMove()">Split Move</button>
+      <button class="button-29" role="button" @click="switchMergeMove()">Merge Move</button>
     </div>
   </div>
 </template>
@@ -29,9 +29,12 @@ export default {
     return {
       game,
       selectedSource: null,
+      selectedSource2: null,
       selectedTarget: null,
       availableMoves: null,
       quantumRealm: false,
+      splitMove: false,
+      mergeMove: false,
     }
   },
   methods: {
@@ -45,9 +48,16 @@ export default {
 
       // A piece is already selected
       if (this.selectedSource !== null) {
+        // Merge selection
+        if (this.mergeMove && this.selectedSource2 === null && this.game.board.tiles[pos]) {
+          this.selectMergePieces(pos)
+          return
+        }
+
         // Deselect a piece
         if (!this.availableMoves.includes(pos)) {
           this.selectedSource = null
+          this.selectedSource2 = null
           this.availableMoves = null
           this.selectedTarget = null
           
@@ -57,7 +67,7 @@ export default {
           }
         } else {
           // Split move
-          if (this.quantumRealm) {
+          if (this.splitMove) {
             // If there's no target selected yet, select a target
             if (this.selectedTarget === null && this.availableMoves.includes(pos)) {
               this.selectedTarget = pos
@@ -66,8 +76,13 @@ export default {
             } else {
               this.game.move(this.selectedSource, this.selectedTarget, pos)
               this.selectedTarget = null
-              this.recolorBackground()
+              this.switchSplitMove()
             }
+          } else if (this.mergeMove) {
+            // Merge move
+            this.game.merge(this.selectedSource, this.selectedSource2, pos)
+            this.selectedSource2 = null
+            this.switchMergeMove()
           } else {
             // Basic move
             this.game.move(this.selectedSource, pos)
@@ -98,11 +113,40 @@ export default {
         return
       }
       this.availableMoves = this.game.getMoves(this.selectedSource)
-      if (this.quantumRealm) {
+      if (this.splitMove) {
         // If it's a split move and target tile has a piece, filter them out
         this.availableMoves = this.availableMoves.filter(move => !this.game.board.tiles[move])
       }
       this.colorAvailableMoves(this.availableMoves)
+    },
+
+    // Select merge pieces
+    selectMergePieces(pos) {
+      this.selectedSource2 = pos
+      document.querySelector([`[tabindex="${this.selectedSource}"]`]).classList.add("selected")
+      document.querySelector([`[tabindex="${this.selectedSource2}"]`]).classList.add("selected")
+      
+      if (this.game.whiteTurn !== this.game.board.tiles[pos].white) {
+        this.selectedSource = null
+        this.selectedSource2 = null
+        return
+      }
+      this.availableMoves = this.game.getMoves(this.selectedSource).filter(move => this.game.getMoves(this.selectedSource2).includes(move))
+      this.colorAvailableMoves(this.availableMoves)
+    },
+
+    // Switch split move
+    switchSplitMove() {
+      this.splitMove = !this.splitMove
+      if (!this.mergeMove) this.recolorBackground()
+      this.mergeMove = false
+    },
+
+    // Switch merge move
+    switchMergeMove() {
+      this.mergeMove = !this.mergeMove
+      if (!this.splitMove) this.recolorBackground()
+      this.splitMove = false
     },
 
     // Recolor the background
