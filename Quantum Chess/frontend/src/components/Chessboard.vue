@@ -117,7 +117,7 @@ export default {
         // If it's a split move and target tile has a piece, filter them out
         this.availableMoves = this.availableMoves.filter(move => !this.game.board.tiles[move])
       }
-      this.colorAvailableMoves(this.availableMoves)
+      if (!this.mergeMove) this.colorAvailableMoves(this.availableMoves)
     },
 
     // Select merge pieces
@@ -131,6 +131,14 @@ export default {
         this.selectedSource2 = null
         return
       }
+
+      // Check if both pieces are the same type
+      if (this.game.board.tiles[this.selectedSource].constructor.name !== this.game.board.tiles[this.selectedSource2].constructor.name) {
+        this.selectedSource = null
+        this.selectedSource2 = null
+        return
+      }
+
       this.availableMoves = this.game.getMoves(this.selectedSource).filter(move => this.game.getMoves(this.selectedSource2).includes(move))
       this.colorAvailableMoves(this.availableMoves)
     },
