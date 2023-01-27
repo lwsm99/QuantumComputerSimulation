@@ -7,7 +7,6 @@ import { King } from "./Pieces/King"
 import { Rook } from "./Pieces/Rook"
 
 export class Board {
-    occupation: boolean[] // Qubits that store the occupation of a tile (1 if non-zero probability)
     tiles: (Piece | null)[] // Bits that stores which piece occupies a tile
 
     public resetBoard(): void {
@@ -15,7 +14,6 @@ export class Board {
         
         // Initialize Chess Board  
         this.tiles = []
-        this.occupation = []
         for (let i = 0; i < 64; i++) {
             if (i < 8) {
                 this.tiles[i] = new pieceOrder[i](false, i)
