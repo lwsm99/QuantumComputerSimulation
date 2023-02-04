@@ -1,22 +1,24 @@
 # Quantenschach [DE]
-Die Quantenwelt ist übermäßig kompliziert und widerspricht allem, was wir über die Realität wissen. Sie ist so kontraintuitiv, dass selbst Wissenschaftler mit ihr zu kämpfen haben. Quantenspiele sind eine Möglichkeit, das seltsame Verhalten der Quantenwelt zu erleben, ohne in die komplizierte Mathematik einzutauchen.
+Die Quantenphysik weist eine erhebliche Komplexität auf und stellt das, was wir über die Wirklichkeit zu wissen glauben, in Frage. Ihr kontraintuitives Verhalten stellt selbst Experten vor Herausforderungen. Quantenspiele bieten eine Möglichkeit, das ungewöhnliche Verhalten der Quantenwelt zu erfahren, ohne sich in komplexe Mathematik einzubringen.
 
-Das Ziel dieses Projekts ist es, die Quantenwelt mit Schach zu kombinieren. Es gab bereits mehrere Versuche, Quantenspiele zu entwickeln, unter anderem auch Quantenschach. Dieses Projekt basiert auf [diesem Aufsatz von Christopher Cantwell](https://arxiv.org/pdf/1906.05836.pdf), ich würde sehr empfehlen, ihn zu lesen, wenn man tiefer in dieses Thema eintauchen möchte.
+Das Ziel dieses Projekts besteht darin, die Quantenwelt mit Schach zu verbinden. Es gab bereits mehrere Bemühungen, Quantenspiele zu entwickeln, darunter auch Quantenschach. Dieses Projekt basiert auf [diesem Papier von Christopher Cantwell](https://arxiv.org/pdf/1906.05836.pdf) und es wird empfohlen, dieses Papier zu lesen, um ein tieferes Verständnis des Themas zu erlangen.
+
+Eine ausführlichere Beschreibung des Projekts kann man in [Quantum_Chess.de.pdf](Quantum_Chess.de.pdf) vorfinden.
 
 
 ## Quantenschach-Regelwerk
 Es gelten die Grundregeln von Schach, mit Ausnahme der unten aufgeführten Regeln.
 
 #### Bewegung
-* Ein Spieler kann einen einfachen Schachzug, einen "Split Move" oder einen "Merge Move" ausführen.
+* Klassischer Schach Move
 * Split Move: Eine Figur kann zwei verschiedene Ziele auf einmal wählen (beides müssen legale Züge sein).
     * Split Moves dürfen nicht verwendet werden, um gegnerische Figuren zu schlagen.
 * Merge Move: Zwei geteilte Figuren können zu einer einzigen Figur verschmolzen werden (das Zielfeld muss für beide Figuren ein erlaubter Zug sein)
 
 #### Gespaltene Figuren 
-* Gespaltene Figuren können andere Figuren schlagen.
-* Gespaltene Figuren können geschlagen werden.
-* Gespaltene Figuren können nicht weiter gespalten werden.
+* Gespaltene Figuren können gegnerische Figuren schlagen.
+* Gespaltene Figuren können selbst geschlagen werden.
+* Es ist nicht erlaubt, gespaltene Figuren weiter zu spalten.
 
 #### Messung
 * Der Zustand einer Figur ist erst bekannt, wenn sie gemessen wird.
@@ -27,6 +29,7 @@ Es gelten die Grundregeln von Schach, mit Ausnahme der unten aufgeführten Regel
 
 #### Andere Regeln
 * Es gibt kein Schach oder Schachmatt, das Spiel endet, wenn der König geschlagen wird.
+* Es gibt keine Regeln für Ën Passant", "Rochade" oder "Ümwandlung", für die Einfachheit.
 
 
 ## Projektstruktur
